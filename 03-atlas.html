@@ -196,6 +196,16 @@
   .thesis strong{color:#f6efdd;font-weight:700;border-bottom:1px solid var(--copper)}
   .meta{display:grid;grid-template-columns:1fr 1fr;gap:12px 20px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#9aa4c4}
   .meta b{display:block;color:#f2ecdc;font-weight:400;font-size:12px;letter-spacing:.05em;margin-top:3px}
+  .essay-cta{
+    display:inline-flex;align-items:center;gap:10px;margin-top:20px;padding:9px 15px;
+    border:1px solid rgba(216,180,106,.45);border-radius:999px;
+    font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--gold-light);text-decoration:none;background:rgba(9,15,42,.4);
+    -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+    transition:background .2s ease,border-color .2s ease,transform .2s ease;
+  }
+  .essay-cta:hover{background:rgba(216,180,106,.13);border-color:rgba(216,180,106,.85);transform:translateY(-1px)}
+  .essay-cta span{font-size:14px;line-height:1}
 
   /* chart layout */
   .chart-row{display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:clamp(22px,2.6vw,40px);align-items:start}
@@ -363,6 +373,8 @@
     border-top:1px solid var(--line);font-family:var(--mono);font-size:10px;
     letter-spacing:.14em;text-transform:uppercase;color:var(--faint);
   }
+  .footer a{color:var(--copper);text-decoration:none;border-bottom:1px solid rgba(216,180,106,.35)}
+  .footer a:hover{border-bottom-color:var(--copper)}
   @media (max-width:1120px){
     .hero{grid-template-columns:1fr;gap:24px}
     .chart-row{grid-template-columns:1fr}
@@ -572,6 +584,7 @@
         <div>Center<b>常量 / 不变</b></div>
         <div>Method<b>观测 / 非预测</b></div>
       </div>
+      <a class="essay-cta" href="essay.html">阅读作业正文 <span>→</span></a>
     </div>
   </header>
 
@@ -630,7 +643,7 @@
   </section>
 
   <div class="footer">
-    <span>方案 03 · 星图 / Celestial Atlas — 用定位代替预测</span>
+    <span>方案 03 · 星图 / <a href="essay.html">作业正文</a></span>
     <span>Claude / Knowledge Map Series / 03</span>
   </div>
 </div>
