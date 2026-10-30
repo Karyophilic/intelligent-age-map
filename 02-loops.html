@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>方案 02 · 智能时代回路图</title>
+<style>
+  :root{
+    --paper:#edf0ea;
+    --paper-2:#e3e7df;
+    --ink:#151a17;
+    --graphite:#59615b;
+    --faint:#8b938c;
+    --rule:#b9c0b7;
+    --red:#b93b2a;
+    --blue:#1e5b9e;
+    --gold:#96700f;
+    --mono:"Consolas","SFMono-Regular","Menlo","Cascadia Mono",monospace;
+    --sans:"Microsoft YaHei","PingFang SC","Hiragino Sans GB","Helvetica Neue",Arial,sans-serif;
+    --serif:"Songti SC","STSong","Source Han Serif SC","Noto Serif SC","SimSun",serif;
+  }
+  *{box-sizing:border-box}
+  html{background:#cfd4cc}
+  body{
+    margin:0;background:#cfd4cc;color:var(--ink);font-family:var(--sans);
+    line-height:1.7;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{
+    max-width:1500px;margin:24px auto;padding:0 clamp(18px,3.4vw,54px) 20px;
+    background:
+      linear-gradient(rgba(30,91,158,.075) 1px,transparent 1px) 0 0/100% 24px,
+      linear-gradient(90deg,rgba(30,91,158,.075) 1px,transparent 1px) 0 0/24px 100%,
+      linear-gradient(rgba(30,91,158,.14) 1px,transparent 1px) 0 0/100% 120px,
+      linear-gradient(90deg,rgba(30,91,158,.14) 1px,transparent 1px) 0 0/120px 100%,
+      var(--paper);
+    box-shadow:0 0 0 1px rgba(0,0,0,.09),0 30px 90px rgba(0,0,0,.2);
+  }
+
+  /* header */
+  .topbar{
+    display:flex;justify-content:space-between;gap:20px;align-items:baseline;
+    border-bottom:1px solid var(--ink);padding:22px 0 9px;
+    font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--graphite);
+  }
+  .topbar b{color:var(--red);font-weight:400}
+  .hero{
+    display:grid;grid-template-columns:minmax(0,1.35fr) minmax(300px,.7fr);
+    gap:clamp(26px,5vw,80px);align-items:end;padding:34px 0 26px;
+  }
+  .kicker{font-family:var(--mono);font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:var(--blue);margin-bottom:14px}
+  h1{
+    margin:0;font-family:var(--serif);font-weight:700;line-height:.98;
+    font-size:clamp(48px,6.6vw,102px);letter-spacing:.02em;
+  }
+  h1 span{display:block;font-size:.55em;letter-spacing:.18em;color:var(--graphite);font-weight:400;margin-top:10px}
+  .hero-side{border-top:2px solid var(--ink);padding-top:14px}
+  .thesis{margin:0 0 14px;font-size:clamp(14px,1.15vw,17px);line-height:1.9;color:#2b302d}
+  .thesis strong{font-weight:700;box-shadow:inset 0 -.45em rgba(185,59,42,.16)}
+  .legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-family:var(--mono);font-size:9px;letter-spacing:.06em;color:var(--graphite)}
+  .legend b{font-weight:400;color:var(--ink)}
+  .legend .r{color:var(--red)}.legend .bl{color:var(--blue)}.legend .g{color:var(--gold)}
+
+  /* layout */
+  .main{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:clamp(16px,2vw,30px);align-items:start}
+  .map-card{border:1px solid var(--ink);background:rgba(255,255,255,.22);position:relative}
+  .map-card::before,.map-card::after{
+    content:"";position:absolute;width:12px;height:12px;border:1px solid var(--ink);z-index:2;
+  }
+  .map-card::before{left:-1px;top:-1px;border-right:0;border-bottom:0}
+  .map-card::after{right:-1px;bottom:-1px;border-left:0;border-top:0}
+  svg{display:block;width:100%;height:auto;overflow:visible}
+  .svg-scroll{overflow:hidden}
+  .scroll-hint{display:none}
+  .map-cap{
+    display:flex;justify-content:space-between;gap:16px;align-items:baseline;
+    border-top:1px solid var(--rule);padding:8px 12px;
+    font-family:var(--mono);font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);
+  }
+  .map-cap b{font-weight:400;color:var(--graphite)}
+  .map-note{
+    display:grid;grid-template-columns:104px 1fr;gap:16px;align-items:start;
+    border-top:1px solid var(--rule);padding:13px 14px 15px;
+  }
+  .map-note .k{font-family:var(--mono);font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--red);padding-top:3px}
+  .map-note p{margin:0;font-size:11.5px;line-height:1.75;color:#3b423d}
+  .map-note p b{font-weight:700;box-shadow:inset 0 -.42em rgba(185,59,42,.14)}
+
+  /* svg styles */
+  .edge{fill:none;stroke:#2b322d;stroke-width:1.15;transition:opacity .18s ease,stroke-width .18s ease}
+  .edge.pos{stroke:#9c3527}
+  .edge.neg{stroke:#1e5b9e}
+  .edge.dim{opacity:.09}
+  .edge.live{stroke-width:2.6;opacity:1}
+  .edge-mark-bg{fill:var(--paper);stroke-width:1.15}
+  .edge-mark.pos .edge-mark-bg{stroke:#9c3527}
+  .edge-mark.neg .edge-mark-bg{stroke:#1e5b9e}
+  .edge-label{font-family:var(--mono);font-size:13px;font-weight:700}
+  .edge-label.pos{fill:#9c3527}
+  .edge-label.neg{fill:#1e5b9e}
+  .edge-delay{font-family:var(--mono);font-size:9px;fill:#59615b}
+  .node{cursor:pointer;transition:opacity .18s ease}
+  .node rect{stroke:#151a17;stroke-width:1.2;fill:#f3f4ee}
+  .node text{font-family:var(--sans);font-size:13px;fill:#151a17;letter-spacing:.04em;pointer-events:none}
+  .node .code{font-family:var(--mono);font-size:7.5px;fill:var(--faint);letter-spacing:.08em}
+  .node.change rect{fill:#1a201c;stroke:#1a201c}
+  .node.change text{fill:#f2f0e6}
+  .node.change .code{fill:#a9b0a8}
+  .node.change .delta{fill:#c4452f}
+  .node.hub rect{stroke-width:2.4}
+  .node.dim{opacity:.22}
+  .node:hover rect{fill:#fffdf4}
+  .node.change:hover rect{fill:#26302a}
+  .badge{cursor:pointer;transition:opacity .18s ease}
+  .badge rect{fill:var(--paper);stroke-width:1.2}
+  .badge text{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.06em;pointer-events:none}
+  .badge.r rect{stroke:#b93b2a}.badge.r text{fill:#b93b2a}
+  .badge.b rect{stroke:#1e5b9e}.badge.b text{fill:#1e5b9e}
+  .badge:hover rect{fill:#fffdf4}
+  .lev{cursor:pointer;transition:opacity .18s ease}
+  .lev polygon{fill:#a57c10;stroke:var(--paper);stroke-width:2}
+  .lev text{font-family:var(--mono);font-size:7.5px;fill:#7d5c07;letter-spacing:.04em;pointer-events:none}
+  .lev:hover polygon{fill:#c79a1c}
+  .ann{font-family:var(--mono);font-size:9px;fill:#b93b2a;letter-spacing:.1em}
+  .you{fill:none;stroke:#b93b2a;stroke-width:1.3;stroke-dasharray:3 4}
+  .ghost{opacity:.55}
+  .hidden{display:none}
+
+  /* panel */
+  .panel{
+    position:sticky;top:20px;border:1px solid var(--ink);background:var(--paper);
+    max-height:calc(100vh - 40px);display:flex;flex-direction:column;
+  }
+  .panel::after{
+    content:"";position:absolute;left:1px;right:1px;bottom:1px;height:34px;
+    background:linear-gradient(transparent,var(--paper));pointer-events:none;
+  }
+  .panel-head{border-bottom:1px solid var(--ink);padding:13px 16px 11px;display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+  .panel-head .t{font-family:var(--mono);font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint)}
+  .panel-head .n{font-family:var(--mono);font-size:9px;color:var(--red)}
+  .panel-body{padding:15px 16px 18px;overflow-y:auto}
+  .tag{display:inline-block;font-family:var(--mono);font-size:8px;letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--rule);padding:2px 6px;color:var(--graphite);margin-bottom:8px}
+  .panel-body h3{margin:0 0 7px;font-family:var(--serif);font-size:19px;letter-spacing:.05em;line-height:1.4}
+  .panel-body p{margin:0;font-size:11.5px;line-height:1.8;color:#39403b}
+  .panel-body .rel{margin-top:10px;font-family:var(--mono);font-size:8.5px;line-height:1.7;color:var(--faint);letter-spacing:.02em}
+  .default-copy{border-bottom:1px solid var(--rule);padding-bottom:12px;margin-bottom:12px}
+  .default-copy .lead{font-family:var(--serif);font-size:16px;line-height:1.7;letter-spacing:.03em;margin-bottom:7px}
+  .howto{font-size:10.5px;line-height:1.75;color:var(--graphite)}
+  .howto b{color:var(--ink);font-weight:700}
+
+  .list-head{display:flex;justify-content:space-between;align-items:baseline;margin:14px 0 6px;font-family:var(--mono);font-size:8.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--graphite)}
+  .list-head span{color:var(--faint);letter-spacing:.06em;text-transform:none}
+  .loop-row,.lev-row{
+    display:grid;grid-template-columns:26px 1fr;gap:8px;padding:7px 5px;
+    border-bottom:1px solid rgba(21,26,23,.12);cursor:pointer;transition:background .16s ease;
+  }
+  .loop-row:hover,.lev-row:hover{background:rgba(30,91,158,.07)}
+  .loop-row .id,.lev-row .id{font-family:var(--mono);font-size:8.5px;letter-spacing:.02em;padding-top:2px}
+  .loop-row .id.r{color:var(--red)}.loop-row .id.b{color:var(--blue)}
+  .lev-row .id{color:var(--gold)}
+  .loop-row h4,.lev-row h4{margin:0 0 2px;font-size:11px;letter-spacing:.04em;font-weight:700}
+  .loop-row p,.lev-row p{margin:0;font-size:9.5px;line-height:1.55;color:var(--faint)}
+  .grp{margin:9px 0 2px;font-family:var(--mono);font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint)}
+
+  /* leverage ladder */
+  .ladder{margin-top:34px;border-top:1px solid var(--ink);padding-top:20px}
+  .ladder-head{display:flex;justify-content:space-between;align-items:baseline;gap:20px;margin-bottom:16px}
+  .ladder-head h2{margin:0;font-family:var(--serif);font-size:clamp(20px,2vw,26px);letter-spacing:.08em}
+  .ladder-head span{font-family:var(--mono);font-size:8.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint)}
+  .steps{display:grid;grid-template-columns:repeat(6,1fr);border:1px solid var(--ink)}
+  .step{padding:12px 14px 16px;border-right:1px solid var(--ink);position:relative;min-height:112px}
+  .step:last-child{border-right:0}
+  .step .no{font-family:var(--mono);font-size:8px;color:var(--faint);letter-spacing:.12em}
+  .step h3{margin:6px 0 5px;font-size:13px;letter-spacing:.08em}
+  .step p{margin:0;font-size:9.5px;line-height:1.65;color:var(--graphite)}
+  .step.high{background:rgba(150,112,15,.1)}
+  .step.high .no,.step.high h3{color:var(--gold)}
+  .step.high::after{content:"高杠杆";position:absolute;top:10px;right:10px;font-family:var(--mono);font-size:7px;letter-spacing:.12em;color:var(--gold)}
+  .ladder-note{margin:14px 0 0;font-family:var(--serif);font-size:14px;letter-spacing:.04em;color:#313733}
+  .ladder-note em{font-style:normal;color:var(--red)}
+  .footer{display:flex;justify-content:space-between;gap:20px;margin-top:28px;padding-top:12px;border-top:1px solid var(--rule);font-family:var(--mono);font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+
+  @media (max-width:1080px){
+    .hero{grid-template-columns:1fr;gap:22px}
+    .main{grid-template-columns:1fr}
+    .panel{position:static;max-height:none}
+    .panel-body{max-height:none}
+  }
+  @media (max-width:720px){
+    .wrap{margin:0;padding:0 14px 16px}
+    .svg-scroll{overflow-x:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+    .svg-scroll svg{min-width:760px}
+    .svg-scroll::-webkit-scrollbar{height:6px}
+    .svg-scroll::-webkit-scrollbar-thumb{background:var(--rule)}
+    .scroll-hint{
+      display:flex;justify-content:space-between;align-items:center;
+      padding:7px 12px;border-bottom:1px solid var(--rule);
+      font-family:var(--mono);font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--graphite);
+    }
+    .steps{grid-template-columns:1fr 1fr}
+    .step:nth-child(2n){border-right:0}
+    .step:nth-child(-n+4){border-bottom:1px solid var(--ink)}
+    .ladder-head,.footer{flex-direction:column;gap:6px}
+    .legend{gap:5px 12px}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+  @media print{html,body{background:#fff}.wrap{box-shadow:none;margin:0;max-width:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <span>Knowledge Map Series / Plate 02</span>
+    <span><b>Causal Loop Diagram</b> &nbsp;·&nbsp; KM-02 &nbsp;·&nbsp; 2026.10</span>
+  </div>
+
+  <header class="hero">
+    <div>
+      <div class="kicker">A system map, not a trend list</div>
+      <h1>智能时代<span>回路图</span></h1>
+    </div>
+    <div class="hero-side">
+      <p class="thesis">变化不是一张清单，而是一组<strong>相互咬合的回路</strong>。看懂回路，才知道力气该往哪里使。</p>
+      <div class="legend">
+        <span><b class="r">+</b> 同向</span>
+        <span><b class="bl">−</b> 反向</span>
+        <span><b>∥</b> 延迟</span>
+        <span><b class="r">R</b> 增强回路</span>
+        <span><b class="bl">B</b> 平衡回路</span>
+        <span><b class="g">◇</b> 杠杆点</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <section class="map-card" aria-label="因果回路图">
+      <div class="scroll-hint"><span>← 左右滑动查看全图</span><span>Scroll →</span></div>
+      <div class="svg-scroll">
+        <svg id="map" viewBox="0 0 1200 900" role="img" aria-label="智能时代因果回路图"></svg>
+      </div>
+      <div class="map-cap">
+        <span><b>图 02</b> · 因果回路图 / 箭头表示因果方向，不表示时间先后</span>
+        <span>Drawn 2026.10</span>
+      </div>
+      <div class="map-note">
+        <span class="k">Reading Note<br>读图提示</span>
+        <p>先找增强回路（R），再找平衡回路（B）。真正的杠杆点，不是<b>更努力</b>，而是改变回路接线的地方。</p>
+      </div>
+    </section>
+
+    <aside class="panel" aria-label="图例与说明">
+      <div class="panel-head">
+        <span class="t">Reading Panel / 阅读面板</span>
+        <span class="n" id="panelNo">KM-02</span>
+      </div>
+      <div class="panel-body" id="panelBody">
+        <div class="default-copy">
+          <div class="lead">系统不会因为一个变量改变，只会因为回路被重新接线而改变。</div>
+          <p class="howto">悬停图中任意<b>节点</b>、<b>回路编号</b>或金色<b>菱形</b>，这里会显示解释。点击右侧条目，也能在图上定位。</p>
+        </div>
+
+        <div class="list-head">Loops / 六条回路 <span>悬停高亮</span></div>
+        <div id="loopList"></div>
+
+        <div class="list-head">Leverage / 杠杆点 <span>金色菱形</span></div>
+        <div id="levList"></div>
+
+        <div class="list-head">Constants / 不变的底 <span>不画成节点</span></div>
+        <p class="howto" style="font-size:10px">稀缺守恒 · 验证需要时间 · 信任需要时间 · 协调有成本 · 注意力有限。它们不随模型版本更新。</p>
+      </div>
+    </aside>
+  </main>
+
+  <section class="ladder" aria-label="杠杆阶梯">
+    <div class="ladder-head">
+      <h2>杠杆阶梯 <span>/ Leverage Ladder</span></h2>
+      <span>越往上，越少人做，越耐用</span>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="no">01 / PARAMETER</div><h3>参数</h3><p>补贴、价格、算力配额。最快见效，也最容易被抵消。</p></div>
+      <div class="step"><div class="no">02 / PROCESS</div><h3>流程</h3><p>重设计工作流、审批链、交付方式。中等杠杆。</p></div>
+      <div class="step"><div class="no">03 / INFORMATION</div><h3>信息流</h3><p>度量什么、公开什么、谁看得见。改变行为，不靠喊话。</p></div>
+      <div class="step"><div class="no">04 / RULES</div><h3>规则</h3><p>责任归属、准入、分配。把外部性写进制度。</p></div>
+      <div class="step high"><div class="no">05 / GOALS</div><h3>目标</h3><p>为什么做、为谁做。目标一变，流程才会真变。</p></div>
+      <div class="step high"><div class="no">06 / PARADIGM</div><h3>范式</h3><p>什么算工作、什么算教育、什么算价值。最难，也最持久。</p></div>
+    </div>
+    <p class="ladder-note">多数应对停在参数层：买工具、报课程、追模型。<em>真正耐用的应对，动的是目标与范式。</em></p>
+  </section>
+
+  <div class="footer">
+    <span>方案 02 · 回路 / Causal Loops — 用动力学代替清单</span>
+    <span>Claude / Knowledge Map Series / 02</span>
+  </div>
+</div>
+
+<script>
+(function(){
+  const NS = 'http://www.w3.org/2000/svg';
+  const svg = document.getElementById('map');
+
+  const nodes = [
+    {id:'cap',    code:'V01', label:'模型能力',     x:220, y:150, kind:'plain',  desc:'模型能完成的任务范围与质量。它既是发动机，也是整张图里最容易被误读为「唯一变量」的东西。'},
+    {id:'cost',   code:'V02', label:'智能成本',     x:560, y:118, kind:'change', desc:'完成一次认知任务的成本。它正在坍缩，并由此改写后面几乎所有的关系。'},
+    {id:'rev',    code:'V03', label:'数据与收入',   x:930, y:150, kind:'plain',  desc:'采用带来的数据、现金流与反馈。它们反过来喂养能力，形成第一个增强回路。'},
+    {id:'adopt',  code:'V04', label:'组织采用',     x:600, y:420, kind:'change', hub:true, desc:'组织把智能嵌入真实流程的程度。它是整张图的枢纽：几乎所有回路都要经过它。'},
+    {id:'supply', code:'V05', label:'生成供给',     x:1050,y:330, kind:'change', desc:'内容、代码、分析、设计的供给量。成本下降，供给爆炸。'},
+    {id:'attn',   code:'V06', label:'注意力竞争',   x:1060,y:540, kind:'change', desc:'供给越多，争夺注意力越激烈。竞争把价值推向差异化与可信度。'},
+    {id:'trust',  code:'V07', label:'信任',         x:810, y:548, kind:'plain',  desc:'对产出、机构与人的可信度。它降低交易成本，也无法被一次性生成。'},
+    {id:'verify', code:'V08', label:'验证瓶颈',     x:850, y:700, kind:'plain',  desc:'判断产出是否真实、正确、可用的能力。生成便宜了，验证没有。'},
+    {id:'mid',    code:'V09', label:'中间层岗位',   x:360, y:720, kind:'change', desc:'标准化、可度量、负责信息传递的中间岗位。它们最先被压缩。'},
+    {id:'coord',  code:'V10', label:'协调成本',     x:145, y:566, kind:'plain',  desc:'让一群人协同工作的成本。组织存在的理由，就是降低它。'},
+    {id:'judge',  code:'V11', label:'判断的相对价值',x:170, y:336, kind:'change', desc:'在执行变便宜之后，定义问题、选择方向、承担后果的相对价值。你在这里。'},
+    {id:'invest', code:'V12', label:'判断力投资',   x:340, y:492, kind:'plain',  desc:'在学习、实践与反馈中训练判断力的投入。它是少数会随使用而增值的资产。'},
+    {id:'shock',  code:'V13', label:'结构冲击',     x:540, y:790, kind:'plain',  desc:'岗位、组织与行业结构的变化速度超过个人与制度的适应速度。'},
+    {id:'reg',    code:'V14', label:'制度回应',     x:820, y:812, kind:'plain',  desc:'社会保障、再分配、责任框架与监管。它总是迟到，但不会缺席。'}
+  ];
+
+  const edges = [
+    {id:'e1',  from:'cap',   to:'cost',   sign:'-', curve:-34,  loops:['R1']},
+    {id:'e2',  from:'cost',  to:'adopt',  sign:'-', curve:78,   loops:['R1']},
+    {id:'e3',  from:'adopt', to:'rev',    sign:'+', curve:-40,  loops:['R1']},
+    {id:'e4',  from:'rev',   to:'cap',    sign:'+', curve:80,   loops:['R1']},
+    {id:'e5',  from:'cost',  to:'supply', sign:'-', curve:-88,  loops:['R2']},
+    {id:'e6',  from:'supply',to:'attn',   sign:'+', curve:-44,  loops:['R2']},
+    {id:'e7',  from:'attn',  to:'trust',  sign:'+', curve:-24,  loops:['R2']},
+    {id:'e8',  from:'trust', to:'adopt',  sign:'+', curve:-28,  loops:['R2']},
+    {id:'e9',  from:'adopt', to:'supply', sign:'+', curve:64,   loops:['R2']},
+    {id:'e10', from:'supply',to:'verify', sign:'+', curve:-44,  loops:['B1']},
+    {id:'e11', from:'verify',to:'supply', sign:'-', curve:62,   loops:['B1']},
+    {id:'e12', from:'cost',  to:'mid',    sign:'+', curve:120,  loops:['R3']},
+    {id:'e13', from:'mid',   to:'coord',  sign:'+', curve:-30,  loops:['R3']},
+    {id:'e14', from:'coord', to:'adopt',  sign:'-', curve:74,   loops:['R3']},
+    {id:'e15', from:'adopt', to:'cost',   sign:'-', curve:86,   loops:['R3']},
+    {id:'e16', from:'cost',  to:'judge',  sign:'-', curve:56,   loops:['R4']},
+    {id:'e17', from:'judge', to:'invest', sign:'+', curve:24,   loops:['R4']},
+    {id:'e18', from:'invest',to:'cost',   sign:'-', curve:52,   loops:['R4']},
+    {id:'e19', from:'adopt', to:'shock',  sign:'+', curve:42,   loops:['B3']},
+    {id:'e20', from:'shock', to:'reg',    sign:'+', curve:22,   loops:['B3'], delay:true},
+    {id:'e21', from:'reg',   to:'adopt',  sign:'-', curve:64,   loops:['B3']}
+  ];
+
+  const loops = [
+    {id:'R1', type:'R', name:'能力—成本—采用', x:770, y:236, desc:'能力越强，成本越低；成本越低，采用越多；采用带来数据与收入，又反过来喂养能力。整张图的发动机。'},
+    {id:'R2', type:'R', name:'供给—注意力—信任', x:930, y:432, desc:'成本下降带来供给爆炸；供给越多，注意力竞争越激烈；竞争把需求推向可信的差异化；信任降低交易成本，进一步扩大采用。'},
+    {id:'B1', type:'B', name:'验证瓶颈', x:982, y:636, desc:'供给越多，验证需求越大；验证跟不上，有效供给反而受限。生成便宜，验证不便宜。'},
+    {id:'R3', type:'R', name:'中间层收缩', x:320, y:640, desc:'智能越便宜，标准化中间岗位越少；协调成本下降，采用进一步扩大，又压低成本。回路越转，中间层越薄。'},
+    {id:'R4', type:'R', name:'判断力溢价', x:282, y:236, desc:'执行越便宜，判断的相对价值越高；判断力投资越多，委派与验证越有效，又把有效成本压低。'},
+    {id:'B3', type:'B', name:'制度滞后', x:668, y:862, desc:'采用带来结构冲击；冲击推动制度回应；制度回应滞后地抑制采用。回路有延迟，所以震荡会先发生。'}
+  ];
+
+  const levs = [
+    {id:'P1', actor:'个人', name:'换栈', edge:'e17', t:.45, desc:'把学习重心从「会做」移到「定义问题、编排、验收、担责」。它落在判断力回路上，而不是工具清单上。'},
+    {id:'P2', actor:'个人', name:'信任资产', edge:'e7', t:.5, desc:'在注意力过剩的地方，可验证的信任是稀缺品。它需要长期积累，无法被一次性生成。'},
+    {id:'P3', actor:'个人', name:'做编排者', edge:'e2', t:.63, desc:'重新设计「人 + 智能体」的工作单元，而不是把 AI 当插件。委派、设定标准、验收，是新的基本功。'},
+    {id:'P4', actor:'个人', name:'反脆弱', edge:'e19', t:.46, desc:'在结构冲击到来前保留冗余：多元收入、低成本试验、可迁移的关系。不要把所有筹码押在一个岗位叙事上。'},
+    {id:'O1', actor:'组织', name:'流程重设计', edge:'e12', t:.3, desc:'在裁撤中间层之前，先重设计流程。否则只是把协调成本藏起来，让它在别处爆掉。'},
+    {id:'O2', actor:'组织', name:'知识中台', edge:'e9', t:.55, desc:'把采用过程中产生的知识、数据与判断沉淀为可调用资产，而不是留在个人手里。'},
+    {id:'O3', actor:'组织', name:'人机分工', edge:'e11', t:.46, desc:'机器做广度与速度，人做深度与责任。把验证权交给能担责的人，而不是交给最会用工具的人。'},
+    {id:'O4', actor:'组织', name:'度量转向', edge:'e3', t:.6, desc:'度量结果、信任与长期价值，而不是产出量。度量一变，行为才会真变。'},
+    {id:'S1', actor:'社会', name:'教育转向', edge:'e17', t:.73, desc:'训练判断、提问与项目协作，而不是记忆与标准答案。教育的产出周期长，所以更要提前动。'},
+    {id:'S2', actor:'社会', name:'制度补位', edge:'e20', t:.5, desc:'社会保障、再分配、AI 责任框架，处理回路带来的结构冲击。制度会迟到，但不会缺席。'},
+    {id:'S3', actor:'社会', name:'公共设施', edge:'e28', t:.55, desc:'让算力、数据、模型可及，避免能力向少数节点集中。'}
+  ];
+
+  // fix S3 edge reference: cost -> supply
+  levs.find(l=>l.id==='S3').edge = 'e5';
+
+  const byId = Object.fromEntries(nodes.map(n=>[n.id,n]));
+  const panelBody = document.getElementById('panelBody');
+  const panelNo = document.getElementById('panelNo');
+
+  function mk(tag, attrs, parent){
+    const e = document.createElementNS(NS, tag);
+    for(const k in attrs) e.setAttribute(k, attrs[k]);
+    parent.appendChild(e);
+    return e;
+  }
+  function nodeWidth(n){ return n.label.length * 14.2 + 28; }
+
+  // defs
+  const defs = mk('defs', {}, svg);
+  [['pos','#9c3527'],['neg','#1e5b9e'],['neutral','#2b322d']].forEach(([k,c])=>{
+    const m = mk('marker', {id:'arrow-'+k, viewBox:'0 0 10 10', refX:'9', refY:'5',
+      markerWidth:'6', markerHeight:'6', orient:'auto-start-reverse'}, defs);
+    mk('path', {d:'M0,0 L10,5 L0,10 z', fill:c}, m);
+  });
+
+  const edgeLayer = mk('g', {class:'edges'}, svg);
+  const nodeLayer = mk('g', {class:'nodes'}, svg);
+  const badgeLayer = mk('g', {class:'badges'}, svg);
+  const levLayer = mk('g', {class:'levs'}, svg);
+
+  function borderPoint(n, tx, ty){
+    const dx = tx - n.x, dy = ty - n.y;
+    const sx = dx === 0 ? Infinity : (nodeWidth(n)/2) / Math.abs(dx);
+    const sy = dy === 0 ? Infinity : 18 / Math.abs(dy);
+    const s = Math.min(sx, sy);
+    return {x:n.x + dx*s, y:n.y + dy*s};
+  }
+  function qPoint(a,c,b,t){
+    const u = 1-t;
+    return {x:u*u*a.x + 2*u*t*c.x + t*t*b.x, y:u*u*a.y + 2*u*t*c.y + t*t*b.y};
+  }
+
+  const edgeEls = [];
+  const edgeGeom = {};
+
+  edges.forEach(e=>{
+    const a = byId[e.from], b = byId[e.to];
+    const dx = b.x-a.x, dy = b.y-a.y, len = Math.hypot(dx,dy)||1;
+    let cx = (a.x+b.x)/2, cy = (a.y+b.y)/2;
+    if(e.curve){
+      cx += (-dy/len) * e.curve * 2;
+      cy += ( dx/len) * e.curve * 2;
+    }
+    const p0 = borderPoint(a, cx, cy);
+    const p1 = borderPoint(b, cx, cy);
+    const ctrl = {x:cx, y:cy};
+    const d = `M${p0.x.toFixed(1)},${p0.y.toFixed(1)} Q${cx.toFixed(1)},${cy.toFixed(1)} ${p1.x.toFixed(1)},${p1.y.toFixed(1)}`;
+    const cls = e.sign === '+' ? 'pos' : 'neg';
+    const path = mk('path', {d, class:'edge '+cls, 'marker-end':`url(#arrow-${cls})`}, edgeLayer);
+    path.dataset.id = e.id;
+    edgeEls.push(path);
+    edgeGeom[e.id] = {p0, ctrl, p1};
+
+    const mid = qPoint(p0, ctrl, p1, .5);
+    const mark = mk('g', {class:'edge-mark '+cls}, edgeLayer);
+    mk('circle', {cx:mid.x, cy:mid.y, r:8.6, class:'edge-mark-bg'}, mark);
+    const label = mk('text', {
+      x:mid.x, y:mid.y+4.5,
+      'text-anchor':'middle',
+      class:'edge-label '+cls
+    }, mark);
+    label.textContent = e.sign;
+    if(e.delay){
+      const d = mk('text', {x:mid.x+11, y:mid.y+4, class:'edge-delay'}, mark);
+      d.textContent = '∥';
+    }
+  });
+
+  const nodeEls = [];
+  nodes.forEach(n=>{
+    const w = nodeWidth(n);
+    const g = mk('g', {class:'node'+(n.kind==='change'?' change':'')+(n.hub?' hub':''), transform:`translate(${n.x},${n.y})`}, nodeLayer);
+    g.dataset.id = n.id;
+    g.setAttribute('tabindex','0');
+    g.setAttribute('role','button');
+    mk('rect', {x:-w/2, y:-18, width:w, height:36, rx:2}, g);
+    const code = mk('text', {x:-w/2+6, y:-23, class:'code'}, g);
+    code.textContent = n.code;
+    const t = mk('text', {x:0, y:5, 'text-anchor':'middle'}, g);
+    t.textContent = n.label;
+    if(n.kind==='change'){
+      const d = mk('text', {x:w/2-4, y:-23, 'text-anchor':'end', class:'delta'}, g);
+      d.textContent = 'Δ';
+      d.setAttribute('fill','#c4452f');
+      d.setAttribute('font-size','10');
+      d.setAttribute('font-family','var(--mono)');
+    }
+    nodeEls.push(g);
+  });
+
+  // "you are here"
+  const youG = mk('g', {}, svg);
+  mk('ellipse', {cx:170, cy:336, rx:92, ry:31, class:'you'}, youG);
+  const youT1 = mk('text', {x:56, y:276, class:'ann'}, youG);
+  youT1.textContent = 'YOU ARE HERE';
+  const youT2 = mk('text', {x:56, y:289, class:'ann'}, youG);
+  youT2.textContent = '你在这里';
+  mk('path', {d:'M150,300 Q130,315 142,326', fill:'none', stroke:'#b93b2a', 'stroke-width':'1', 'marker-end':'url(#arrow-pos)'}, youG);
+
+  const badgeEls = [];
+  loops.forEach(l=>{
+    const g = mk('g', {class:'badge '+(l.type==='R'?'r':'b'), transform:`translate(${l.x},${l.y})`}, badgeLayer);
+    g.dataset.id = l.id;
+    g.setAttribute('tabindex','0');
+    g.setAttribute('role','button');
+    mk('rect', {x:-24, y:-12, width:48, height:24, rx:12}, g);
+    const t = mk('text', {x:0, y:4, 'text-anchor':'middle'}, g);
+    t.textContent = l.id;
+    const title = mk('title', {}, g);
+    title.textContent = l.name;
+    badgeEls.push(g);
+  });
+
+  const levEls = [];
+  levs.forEach(l=>{
+    const e = edges.find(x=>x.id===l.edge);
+    const geom = edgeGeom[l.edge];
+    if(!e || !geom) return;
+    const p = qPoint(geom.p0, geom.ctrl, geom.p1, l.t);
+    const g = mk('g', {class:'lev', transform:`translate(${p.x},${p.y})`}, levLayer);
+    g.dataset.id = l.id;
+    g.setAttribute('tabindex','0');
+    g.setAttribute('role','button');
+    mk('polygon', {points:'0,-6.5 6.5,0 0,6.5 -6.5,0'}, g);
+    const t = mk('text', {x:9, y:-7}, g);
+    t.textContent = l.id;
+    const title = mk('title', {}, g);
+    title.textContent = l.name;
+    levEls.push(g);
+  });
+
+  // panel
+  function defaultPanel(){
+    panelNo.textContent = 'KM-02';
+    panelBody.innerHTML = `
+      <div class="default-copy">
+        <div class="lead">系统不会因为一个变量改变，只会因为回路被重新接线而改变。</div>
+        <p class="howto">悬停图中任意<b>节点</b>、<b>回路编号</b>或金色<b>菱形</b>，这里会显示解释。点击右侧条目，也能在图上定位。</p>
+      </div>
+      <div class="list-head">Loops / 六条回路 <span>悬停高亮</span></div>
+      <div id="loopList"></div>
+      <div class="list-head">Leverage / 杠杆点 <span>金色菱形</span></div>
+      <div id="levList"></div>
+      <div class="list-head">Constants / 不变的底 <span>不画成节点</span></div>
+      <p class="howto" style="font-size:10px">稀缺守恒 · 验证需要时间 · 信任需要时间 · 协调有成本 · 注意力有限。它们不随模型版本更新。</p>`;
+    buildLists();
+  }
+
+  function buildLists(){
+    const ll = document.getElementById('loopList');
+    if(ll){
+      ll.innerHTML = '';
+      loops.forEach(l=>{
+        const row = document.createElement('div');
+        row.className = 'loop-row';
+        row.innerHTML = `<div class="id ${l.type==='R'?'r':'b'}">${l.id}</div><div><h4>${l.name}</h4><p>${l.desc.slice(0,28)}…</p></div>`;
+        row.addEventListener('mouseenter', ()=>focusLoop(l.id));
+        row.addEventListener('mouseleave', resetAll);
+        row.addEventListener('click', ()=>showLoop(l));
+        ll.appendChild(row);
+      });
+    }
+    const vl = document.getElementById('levList');
+    if(vl){
+      vl.innerHTML = '';
+      let last = '';
+      levs.forEach(l=>{
+        if(l.actor !== last){
+          const g = document.createElement('div');
+          g.className = 'grp';
+          g.textContent = l.actor;
+          vl.appendChild(g);
+          last = l.actor;
+        }
+        const row = document.createElement('div');
+        row.className = 'lev-row';
+        row.innerHTML = `<div class="id">${l.id}</div><div><h4>${l.name}</h4><p>${l.desc.slice(0,30)}…</p></div>`;
+        row.addEventListener('mouseenter', ()=>{ focusEdge(l.edge); showLev(l); });
+        row.addEventListener('mouseleave', resetAll);
+        vl.appendChild(row);
+      });
+    }
+  }
+
+  function clearClasses(){
+    edgeEls.forEach(e=>e.classList.remove('dim','live'));
+    nodeEls.forEach(n=>n.classList.remove('dim'));
+  }
+  function focusEdges(ids, nodeIds){
+    clearClasses();
+    const set = new Set(ids);
+    edgeEls.forEach(e=>{
+      const on = set.has(e.dataset.id);
+      e.classList.toggle('live', on);
+      e.classList.toggle('dim', !on);
+    });
+    const ns = new Set(nodeIds);
+    nodeEls.forEach(n=>n.classList.toggle('dim', !ns.has(n.dataset.id)));
+  }
+  function focusEdge(id, extraNodes){
+    const e = edges.find(x=>x.id===id);
+    if(!e) return;
+    focusEdges([id], [e.from, e.to, ...(extraNodes||[])]);
+  }
+  function focusLoop(id){
+    const es = edges.filter(e=>e.loops.includes(id));
+    const ns = new Set();
+    es.forEach(e=>{ns.add(e.from); ns.add(e.to);});
+    focusEdges(es.map(e=>e.id), [...ns]);
+    const l = loops.find(x=>x.id===id);
+    showLoop(l);
+  }
+  function resetAll(){
+    clearClasses();
+    defaultPanel();
+  }
+  function showNode(n){
+    panelNo.textContent = n.code;
+    panelBody.innerHTML = `
+      <div class="tag">${n.kind==='change'?'变化 / Variable':'系统变量 / Variable'}</div>
+      <h3>${n.label}</h3>
+      <p>${n.desc}</p>
+      <div class="rel">关联回路 / ${edges.filter(e=>e.from===n.id||e.to===n.id).map(e=>e.loops.join('')).filter((v,i,a)=>a.indexOf(v)===i).join(' · ')}</div>`;
+    const connected = edges.filter(e=>e.from===n.id||e.to===n.id);
+    const ns = new Set([n.id]);
+    connected.forEach(e=>{ns.add(e.from); ns.add(e.to);});
+    focusEdges(connected.map(e=>e.id), [...ns]);
+  }
+  function showLoop(l){
+    if(!l) return;
+    panelNo.textContent = l.id;
+    panelBody.innerHTML = `
+      <div class="tag">${l.type==='R'?'增强回路 / Reinforcing':'平衡回路 / Balancing'}</div>
+      <h3>${l.id} · ${l.name}</h3>
+      <p>${l.desc}</p>
+      <div class="rel">回路类型 / ${l.type==='R'?'正反馈：越转越强，可能失控':'负反馈：越转越稳，也可能锁死'}</div>`;
+    focusLoop(l.id);
+  }
+  function showLev(l){
+    panelNo.textContent = l.id;
+    panelBody.innerHTML = `
+      <div class="tag">${l.actor} · 杠杆点 / Leverage</div>
+      <h3>${l.id} · ${l.name}</h3>
+      <p>${l.desc}</p>
+      <div class="rel">着力位置 / 回路 ${edges.find(e=>e.id===l.edge).loops.join('')} · 作用层级 / 目标与流程</div>`;
+  }
+
+  // events
+  nodeEls.forEach(g=>{
+    const n = byId[g.dataset.id];
+    g.addEventListener('mouseenter', ()=>showNode(n));
+    g.addEventListener('focus', ()=>showNode(n));
+    g.addEventListener('mouseleave', resetAll);
+    g.addEventListener('blur', resetAll);
+  });
+  badgeEls.forEach(g=>{
+    const l = loops.find(x=>x.id===g.dataset.id);
+    g.addEventListener('mouseenter', ()=>focusLoop(l.id));
+    g.addEventListener('focus', ()=>focusLoop(l.id));
+    g.addEventListener('mouseleave', resetAll);
+    g.addEventListener('blur', resetAll);
+    g.addEventListener('click', ()=>showLoop(l));
+  });
+  levEls.forEach(g=>{
+    const l = levs.find(x=>x.id===g.dataset.id);
+    g.addEventListener('mouseenter', ()=>{ focusEdge(l.edge); showLev(l); });
+    g.addEventListener('focus', ()=>{ focusEdge(l.edge); showLev(l); });
+    g.addEventListener('mouseleave', resetAll);
+    g.addEventListener('blur', resetAll);
+  });
+  svg.addEventListener('mouseleave', resetAll);
+
+  defaultPanel();
+})();
+</script>
+</body>
+</html>

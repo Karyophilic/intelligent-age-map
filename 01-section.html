@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>方案 01 · 智能时代剖面图</title>
+<style>
+  :root{
+    --paper:#e9e7e0;
+    --paper-deep:#ddd9cf;
+    --ink:#15171a;
+    --graphite:#555a61;
+    --faint:#8a8d88;
+    --rule:#b3b0a6;
+    --red:#b03a24;
+    --blue:#2c4a6e;
+    --cream:#e8e4d7;
+    --mono:"Consolas","SFMono-Regular","Menlo","Cascadia Mono",monospace;
+    --sans:"Microsoft YaHei","PingFang SC","Hiragino Sans GB","Helvetica Neue",Arial,sans-serif;
+    --serif:"Songti SC","STSong","Source Han Serif SC","Noto Serif SC","SimSun",serif;
+  }
+  *{box-sizing:border-box}
+  html{background:#c9c6bd}
+  body{
+    margin:0;
+    color:var(--ink);
+    font-family:var(--sans);
+    line-height:1.7;
+    background:#c9c6bd;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  body::after{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:99;opacity:.5;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.16'/%3E%3C/svg%3E");
+    mix-blend-mode:multiply;
+  }
+  .sheet{
+    max-width:1500px;margin:24px auto;background:var(--paper);
+    box-shadow:0 0 0 1px rgba(0,0,0,.1),0 30px 90px rgba(0,0,0,.22);
+    padding:0 clamp(20px,4vw,64px);
+  }
+
+  /* ---------- masthead ---------- */
+  .masthead{padding:26px 0 0}
+  .topbar{
+    display:flex;justify-content:space-between;align-items:baseline;gap:20px;
+    font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--graphite);border-bottom:1px solid var(--ink);padding-bottom:10px;
+  }
+  .topbar .right{color:var(--faint)}
+  .hero{
+    display:grid;grid-template-columns:minmax(0,1.55fr) minmax(260px,.75fr);
+    gap:clamp(24px,5vw,90px);align-items:end;padding:44px 0 38px;
+  }
+  .eyebrow{
+    font-family:var(--mono);font-size:10px;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--red);margin-bottom:18px;display:flex;align-items:center;gap:12px;
+  }
+  .eyebrow::before{content:"";width:34px;height:1px;background:var(--red)}
+  h1{
+    margin:0;font-family:var(--serif);font-weight:700;
+    font-size:clamp(46px,7.6vw,116px);line-height:.98;letter-spacing:.015em;
+  }
+  h1 .thin{
+    display:block;color:var(--graphite);font-weight:400;
+    font-size:.22em;letter-spacing:.2em;line-height:1.5;margin-top:16px;
+  }
+  h1 .cut{
+    position:relative;display:inline-block;
+  }
+  h1 .cut::after{
+    content:"";position:absolute;left:-.02em;right:-.06em;bottom:.08em;height:.055em;
+    background:var(--red);
+  }
+  .hero-side{border-left:1px solid var(--rule);padding-left:clamp(18px,2.4vw,34px)}
+  .thesis{
+    margin:0 0 26px;font-size:clamp(15px,1.25vw,18px);line-height:1.9;
+    color:#2a2d31;
+  }
+  .thesis strong{font-weight:700;border-bottom:1px solid var(--red);padding-bottom:1px}
+  .hero-meta{display:grid;grid-template-columns:1fr 1fr;gap:12px 18px;font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--graphite)}
+  .hero-meta dt{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin-bottom:2px}
+  .hero-meta dd{margin:0;color:var(--ink)}
+  .stamp{
+    margin-top:24px;display:inline-block;border:2px solid var(--red);color:var(--red);
+    font-family:var(--mono);font-size:10px;letter-spacing:.2em;padding:7px 12px;
+    transform:rotate(-2.5deg);opacity:.9;
+  }
+
+  /* ---------- drawing layout ---------- */
+  .drawing{
+    display:grid;grid-template-columns:74px minmax(0,1fr) minmax(300px,368px);
+    border-top:1px solid var(--ink);
+  }
+  .rail{
+    position:relative;border-right:1px solid var(--rule);
+    min-height:600px;
+  }
+  .dim{
+    position:absolute;left:30px;top:52px;bottom:52px;width:1px;background:var(--blue);
+  }
+  .dim::before,.dim::after{
+    content:"";position:absolute;left:-4px;width:9px;height:1px;background:var(--blue);
+  }
+  .dim::before{top:0}.dim::after{bottom:0}
+  .dim .arrow{position:absolute;left:-3px;width:7px;height:7px;border-left:1px solid var(--blue);border-bottom:1px solid var(--blue);transform:rotate(-45deg)}
+  .dim .arrow.top{top:-1px}
+  .dim .arrow.bottom{bottom:-1px;transform:rotate(135deg)}
+  .rail-label{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(180deg);
+    writing-mode:vertical-rl;font-family:var(--mono);font-size:9px;letter-spacing:.34em;
+    text-transform:uppercase;color:var(--blue);white-space:nowrap;
+  }
+  .rail-scale{position:absolute;left:22px;right:12px;display:flex;flex-direction:column;justify-content:space-between;top:52px;bottom:52px;font-family:var(--mono);font-size:8px;color:var(--faint);letter-spacing:.1em}
+  .rail-scale span{position:relative;padding-left:12px}
+  .rail-scale span::before{content:"";position:absolute;left:0;top:50%;width:5px;height:1px;background:var(--faint)}
+
+  /* ---------- section cut ---------- */
+  .cut{position:relative;border-right:1px solid var(--rule);padding:0 0 0 clamp(16px,2vw,30px)}
+  .cutline{
+    position:relative;height:26px;display:flex;align-items:center;justify-content:space-between;
+    font-family:var(--mono);font-size:9px;letter-spacing:.16em;color:var(--red);
+  }
+  .cutline::before{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:var(--red);opacity:.55}
+  .cutline span{background:var(--paper);position:relative;z-index:1;padding:0 8px}
+  .cutline span:first-child{padding-left:0}
+  .cutline span:last-child{padding-right:0}
+
+  .band{position:relative;padding:22px 0 26px;border-top:1px solid var(--ink)}
+  .band-head{display:flex;align-items:baseline;gap:14px;margin-bottom:20px;flex-wrap:wrap}
+  .band-head .num{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--red)}
+  .band-head h2{margin:0;font-family:var(--serif);font-weight:700;font-size:clamp(20px,2vw,27px);letter-spacing:.06em}
+  .band-head .en{font-family:var(--mono);font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:var(--faint)}
+  .band-head .note{margin-left:auto;font-size:11px;color:var(--graphite);letter-spacing:.04em}
+  .band.hot{outline:2px solid var(--red);outline-offset:-8px}
+  .band{transition:outline-color .2s ease, background-color .2s ease}
+
+  /* surface */
+  .surface{background:transparent;border-top:0;padding-top:14px}
+  .surface-inner{display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap}
+  .surface-note{font-family:var(--mono);font-size:9px;letter-spacing:.16em;color:var(--faint);white-space:nowrap;padding-top:6px}
+  .signals{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+  .signals li{
+    display:inline-flex;align-items:center;gap:8px;border:1px solid var(--rule);
+    background:rgba(255,255,255,.18);padding:5px 10px;font-size:11px;color:#33363a;
+    letter-spacing:.03em;line-height:1.4;
+  }
+  .signals li::before{content:"";width:5px;height:5px;background:var(--red);border-radius:50%;flex:none}
+  .signals li:nth-child(3n)::before{background:var(--blue)}
+
+  /* shifts */
+  .shifts{
+    background:
+      repeating-linear-gradient(45deg,rgba(21,23,26,.045) 0 1px,transparent 1px 7px),
+      var(--paper-deep);
+    margin-top:8px;padding-left:clamp(12px,1.6vw,22px);padding-right:clamp(12px,1.6vw,22px);
+    border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);
+  }
+  .shift-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0}
+  .shift{
+    padding:16px 18px 20px 0;border-top:1px solid rgba(21,23,26,.22);
+    position:relative;
+  }
+  .shift:nth-child(3n+1),.shift:nth-child(3n+2){border-right:1px solid rgba(21,23,26,.16)}
+  .shift:nth-child(3n+2),.shift:nth-child(3n){padding-left:18px}
+  .shift:nth-child(-n+3){border-top:0;padding-top:4px}
+  .shift .idx{font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--red);margin-bottom:5px}
+  .shift h3{margin:0 0 7px;font-size:16px;letter-spacing:.08em;font-weight:700}
+  .shift p{margin:0;font-size:12px;line-height:1.75;color:#34373b}
+  .shift .signal{margin-top:9px;font-family:var(--mono);font-size:9px;line-height:1.6;color:var(--faint);letter-spacing:.02em}
+
+  /* mechanisms */
+  .mechanisms{background:var(--paper);padding-bottom:30px}
+  .mech-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border-top:1px solid rgba(21,23,26,.3)}
+  .mech{padding:14px 14px 4px 0;border-right:1px solid rgba(21,23,26,.14)}
+  .mech:last-child{border-right:0}
+  .mech .code{font-family:var(--mono);font-size:9px;letter-spacing:.12em;color:var(--blue)}
+  .mech h3{margin:6px 0 6px;font-size:13px;letter-spacing:.06em;font-weight:700}
+  .mech p{margin:0;font-size:10.5px;line-height:1.72;color:var(--graphite)}
+
+  /* constants */
+  .constants{
+    background:var(--ink);color:var(--cream);margin:0 calc(-1 * clamp(12px,1.6vw,22px)) 0;
+    padding:26px clamp(20px,2.4vw,30px) 34px;border-top:0;
+  }
+  .constants .band-head h2{color:var(--cream)}
+  .constants .band-head .num{color:#d2674f}
+  .constants .band-head .en{color:#8f8b7f}
+  .constants .band-head .note{color:#a5a092}
+  .const-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border-top:1px solid rgba(232,228,215,.28)}
+  .const{padding:16px 16px 0 0;border-right:1px solid rgba(232,228,215,.15)}
+  .const:last-child{border-right:0}
+  .const .mark{font-family:var(--mono);font-size:14px;color:#d2674f;line-height:1;display:block;margin-bottom:10px}
+  .const h3{margin:0 0 7px;font-size:13px;letter-spacing:.08em;font-weight:700;color:var(--cream)}
+  .const p{margin:0;font-size:10.5px;line-height:1.72;color:#b9b4a6}
+  .const-note{
+    margin:22px 0 0;padding-top:14px;border-top:1px solid rgba(232,228,215,.2);
+    font-family:var(--serif);font-size:14px;letter-spacing:.08em;color:#cfc9b9;
+  }
+  .const-note em{font-style:normal;color:#e07157}
+
+  .cut-foot{
+    margin-top:26px;padding:18px 0 6px;border-top:1px solid var(--ink);
+    display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:start;
+  }
+  .cut-foot .k{
+    font-family:var(--mono);font-size:8px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--red);white-space:nowrap;padding-top:5px;
+  }
+  .cut-foot p{
+    margin:0;font-family:var(--serif);font-size:clamp(14px,1.3vw,17px);
+    line-height:1.8;letter-spacing:.06em;color:#2c3033;
+  }
+  .cut-foot p em{font-style:normal;border-bottom:1px solid var(--red);padding-bottom:2px}
+
+  /* ---------- schedule ---------- */
+  .schedule{padding:22px 0 10px clamp(18px,2vw,28px);background:var(--paper)}
+  .schedule-head{border-bottom:1px solid var(--ink);padding-bottom:12px;margin-bottom:6px}
+  .schedule-head .kicker{font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--red)}
+  .schedule-head h2{margin:6px 0 4px;font-family:var(--serif);font-size:22px;letter-spacing:.08em}
+  .schedule-head p{margin:0;font-size:10.5px;color:var(--faint);letter-spacing:.02em}
+  .group-label{
+    display:flex;align-items:center;gap:10px;margin:18px 0 2px;
+    font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--graphite);
+  }
+  .group-label::after{content:"";flex:1;height:1px;background:var(--rule)}
+  .group-label b{font-weight:400;color:var(--red)}
+  .anchor{
+    display:grid;grid-template-columns:34px 1fr;gap:0 10px;
+    padding:11px 6px 11px 0;border-bottom:1px solid rgba(21,23,26,.16);
+    cursor:default;transition:background-color .18s ease,padding-left .18s ease;
+    outline:none;
+  }
+  .anchor:hover,.anchor:focus-visible{background:rgba(176,58,36,.07);padding-left:6px}
+  .anchor .code{font-family:var(--mono);font-size:9px;letter-spacing:.06em;color:var(--blue);padding-top:2px}
+  .anchor h3{margin:0 0 3px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+  .anchor p{margin:0;font-size:10.5px;line-height:1.65;color:var(--graphite)}
+  .anchor .acts{
+    grid-column:2;margin-top:6px;font-family:var(--mono);font-size:8px;
+    letter-spacing:.1em;color:var(--faint);text-transform:uppercase;
+  }
+  .legend{
+    margin-top:22px;padding:14px 14px 12px;border:1px solid var(--rule);
+    display:grid;gap:6px;font-size:10px;color:var(--graphite);
+  }
+  .legend .row{display:flex;align-items:center;gap:8px}
+  .swatch{width:18px;height:8px;flex:none;border:1px solid rgba(21,23,26,.3)}
+  .swatch.shift{background:repeating-linear-gradient(45deg,rgba(21,23,26,.25) 0 1px,transparent 1px 4px),var(--paper-deep)}
+  .swatch.mech{background:var(--paper)}
+  .swatch.const{background:var(--ink)}
+  .legend .tip{margin-top:4px;font-family:var(--serif);font-size:12px;line-height:1.7;color:var(--ink);letter-spacing:.04em}
+
+  /* ---------- title block ---------- */
+  .titleblock{
+    margin-top:26px;border:2px solid var(--ink);
+    display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;
+    font-family:var(--mono);font-size:9px;letter-spacing:.1em;
+  }
+  .tb-cell{padding:10px 12px 12px;border-right:1px solid var(--ink);min-height:52px}
+  .tb-cell:last-child{border-right:0}
+  .tb-cell small{display:block;font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin-bottom:4px}
+  .tb-cell b{font-weight:400;font-size:10.5px;letter-spacing:.06em}
+  .tb-cell.big{grid-row:span 1}
+  .tb-cell .red{color:var(--red)}
+  .footer{
+    display:flex;justify-content:space-between;gap:20px;align-items:baseline;
+    padding:16px 0 26px;font-size:10.5px;color:var(--graphite);
+  }
+  .footer .src{font-family:var(--mono);font-size:9px;letter-spacing:.12em;color:var(--faint)}
+
+  @media (max-width:1120px){
+    .drawing{grid-template-columns:60px minmax(0,1fr)}
+    .schedule{grid-column:1/-1;border-top:1px solid var(--ink);padding-left:0;display:grid;grid-template-columns:repeat(2,1fr);gap:0 34px;align-items:start}
+    .schedule-head{grid-column:1/-1}
+    .schedule .legend{grid-column:1/-1}
+    .group-label{grid-column:auto}
+  }
+  @media (max-width:780px){
+    .sheet{padding:0 16px;margin:0}
+    .hero{grid-template-columns:1fr;gap:26px;padding:30px 0 26px}
+    .hero-side{border-left:0;border-top:1px solid var(--rule);padding-left:0;padding-top:18px}
+    .drawing{grid-template-columns:34px minmax(0,1fr)}
+    .rail-scale{display:none}
+    .dim{left:14px}
+    .rail-label{font-size:8px;letter-spacing:.2em}
+    .shift-grid{grid-template-columns:1fr 1fr}
+    .shift:nth-child(3n+1),.shift:nth-child(3n+2){border-right:0}
+    .shift:nth-child(2n){border-left:1px solid rgba(21,23,26,.16);padding-left:14px}
+    .shift:nth-child(-n+3){border-top:1px solid rgba(21,23,26,.22);padding-top:14px}
+    .shift:nth-child(-n+2){border-top:0;padding-top:4px}
+    .mech-grid{grid-template-columns:1fr 1fr}
+    .mech{border-bottom:1px solid rgba(21,23,26,.14);padding-bottom:12px}
+    .mech:last-child{grid-column:1/-1;border-right:0}
+    .const-grid{grid-template-columns:1fr 1fr}
+    .const{border-bottom:1px solid rgba(232,228,215,.15);padding-bottom:14px}
+    .const:last-child{grid-column:1/-1;border-right:0}
+    .schedule{grid-template-columns:1fr}
+    .titleblock{grid-template-columns:1fr 1fr}
+    .tb-cell{border-bottom:1px solid var(--ink)}
+    .tb-cell:nth-child(2n){border-right:0}
+    .footer{flex-direction:column;gap:6px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+  }
+  @media print{
+    html,body{background:#fff}
+    .sheet{box-shadow:none;margin:0;max-width:none}
+    body::after{display:none}
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- MASTHEAD -->
+  <header class="masthead">
+    <div class="topbar">
+      <span>Knowledge Map Series / 知识地图系列</span>
+      <span class="right">Plate 01 of 04 &nbsp;·&nbsp; Section</span>
+    </div>
+    <div class="hero">
+      <div>
+        <div class="eyebrow">Drawing No. KM-01 &nbsp;/&nbsp; 剖面研究</div>
+        <h1>智能时代<span class="cut">剖面</span><span class="thin">A SECTION THROUGH THE INTELLIGENT AGE</span></h1>
+      </div>
+      <div class="hero-side">
+        <p class="thesis">当智能变成廉价的基础设施，稀缺就从<strong>执行</strong>转移到<strong>判断、信任与意义</strong>。这张图不回答案，只把变化拆成地层，把应对画成锚点。</p>
+        <dl class="hero-meta">
+          <div><dt>Reading</dt><dd>从上往下</dd></div>
+          <div><dt>Layers</dt><dd>4 层</dd></div>
+          <div><dt>Anchors</dt><dd>11 个</dd></div>
+          <div><dt>Revision</dt><dd>2026.10 / A</dd></div>
+        </dl>
+        <div class="stamp">FOR DISCUSSION · 供讨论</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- DRAWING -->
+  <main class="drawing">
+    <aside class="rail" aria-hidden="true">
+      <div class="dim"><span class="arrow top"></span><span class="arrow bottom"></span></div>
+      <div class="rail-scale">
+        <span>可见</span><span>较慢</span><span>稳定</span><span>不可见</span>
+      </div>
+      <div class="rail-label">Depth of Change / 变化的深度</div>
+    </aside>
+
+    <section class="cut" aria-label="智能时代地层剖面">
+      <div class="cutline"><span>A — 地表</span><span>SECTION A–A</span><span>2026</span></div>
+
+      <!-- 00 SURFACE -->
+      <div class="band surface" data-layer="surface">
+        <div class="band-head">
+          <span class="num">00</span>
+          <h2>地表信号</h2>
+          <span class="en">Surface Signals</span>
+          <span class="note">你能在新闻里看到的部分</span>
+        </div>
+        <div class="surface-inner">
+          <ul class="signals">
+            <li>Agent 上岗</li>
+            <li>一人公司</li>
+            <li>中间层消失</li>
+            <li>AI 原生组织</li>
+            <li>信任赤字</li>
+            <li>算力集中</li>
+            <li>内容过剩</li>
+            <li>岗位极化</li>
+          </ul>
+          <span class="surface-note">2023 — 2026</span>
+        </div>
+      </div>
+
+      <!-- 01 SHIFTS -->
+      <div class="band shifts" data-layer="shifts">
+        <div class="band-head">
+          <span class="num">01</span>
+          <h2>变化层</h2>
+          <span class="en">Shifts</span>
+          <span class="note">六种正在发生的位移</span>
+        </div>
+        <div class="shift-grid">
+          <article class="shift">
+            <div class="idx">S-01</div>
+            <h3>成本坍缩</h3>
+            <p>认知劳动的边际成本趋近于零。生成变便宜了，验证没有。</p>
+            <div class="signal">信号 / 一份报告、一段代码、一张图的成本下降 90%+</div>
+          </article>
+          <article class="shift">
+            <div class="idx">S-02</div>
+            <h3>生产重构</h3>
+            <p>从「人操作工具」到「人编排智能体」。一个人可以拥有一家公司的产能。</p>
+            <div class="signal">信号 / 一人公司、三人团队、Agent 工作流</div>
+          </article>
+          <article class="shift">
+            <div class="idx">S-03</div>
+            <h3>市场极化</h3>
+            <p>供给爆炸，注意力与信任成为终极稀缺。标准化的中间环节被抽空。</p>
+            <div class="signal">信号 / 内容过剩、渠道扁平、中间商消失</div>
+          </article>
+          <article class="shift">
+            <div class="idx">S-04</div>
+            <h3>认知迁移</h3>
+            <p>记忆与检索贬值，提问、判断、审美、担责升值。</p>
+            <div class="signal">信号 / 「会做」不再值钱，「知道做什么」值钱</div>
+          </article>
+          <article class="shift">
+            <div class="idx">S-05</div>
+            <h3>结构震荡</h3>
+            <p>职业极化：顶部放大、底部服务、中间空心。证书与资历贬值。</p>
+            <div class="signal">信号 / 初级白领岗位收缩，资深判断者溢价</div>
+          </article>
+          <article class="shift">
+            <div class="idx">S-06</div>
+            <h3>意义追问</h3>
+            <p>工作与身份解绑。「人何以为人」从哲学命题变成日常问题。</p>
+            <div class="signal">信号 / 意义感、心理健康、生活设计成为刚需</div>
+          </article>
+        </div>
+      </div>
+
+      <!-- 02 MECHANISMS -->
+      <div class="band mechanisms" data-layer="mechanisms">
+        <div class="band-head">
+          <span class="num">02</span>
+          <h2>机制层</h2>
+          <span class="en">Mechanisms</span>
+          <span class="note">五条反复出现的底层规律</span>
+        </div>
+        <div class="mech-grid">
+          <div class="mech"><span class="code">M-01</span><h3>稀缺守恒</h3><p>稀缺不会消失，只会转移。执行便宜了，判断与信任就贵了。</p></div>
+          <div class="mech"><span class="code">M-02</span><h3>验证瓶颈</h3><p>生成成本下降，验证成本不变。谁能验证，谁掌握瓶颈。</p></div>
+          <div class="mech"><span class="code">M-03</span><h3>杰文斯悖论</h3><p>越便宜，用得越多。总需求上升，问题规模同步放大。</p></div>
+          <div class="mech"><span class="code">M-04</span><h3>中间层坍缩</h3><p>标准化、可度量、可复制的中间环节最先消失。</p></div>
+          <div class="mech"><span class="code">M-05</span><h3>信任复利</h3><p>声誉与关系需要时间积累，无法被一次性生成。</p></div>
+        </div>
+      </div>
+
+      <!-- 03 CONSTANTS -->
+      <div class="band constants" data-layer="constants">
+        <div class="band-head">
+          <span class="num">03</span>
+          <h2>常量层</h2>
+          <span class="en">Constants</span>
+          <span class="note">变化冲不走的岩层</span>
+        </div>
+        <div class="const-grid">
+          <div class="const"><span class="mark">✳</span><h3>人需要意义</h3><p>人无法长期只为效率工作。</p></div>
+          <div class="const"><span class="mark">✳</span><h3>信任需要时间</h3><p>关系、声誉、承诺，都无法加速。</p></div>
+          <div class="const"><span class="mark">✳</span><h3>协调有成本</h3><p>组织存在的理由，是降低协调成本。</p></div>
+          <div class="const"><span class="mark">✳</span><h3>权力趋向集中</h3><p>算力、数据与分发向少数节点聚拢，也激起反作用力。</p></div>
+          <div class="const"><span class="mark">✳</span><h3>注意力有限</h3><p>人的时间与注意力，是唯一不增长的资源。</p></div>
+        </div>
+        <p class="const-note">越往下，越接近<em>不会轻易改变</em>的东西。应对的锚，应该打在这里。</p>
+      </div>
+
+      <div class="cut-foot">
+        <div class="k">Reading Note<br>读图提示</div>
+        <p>先看地表，再看变化；越过机制，最后停在常量。然后问自己：<em>我的锚，打在哪一层？</em></p>
+      </div>
+    </section>
+
+    <!-- SCHEDULE -->
+    <aside class="schedule" aria-label="应对锚点表">
+      <div class="schedule-head">
+        <div class="kicker">Anchor Schedule</div>
+        <h2>应对锚点</h2>
+        <p>悬停任一条目，查看它作用于哪一层。</p>
+      </div>
+
+      <div class="group-label"><b>01</b> 个人 · Individual</div>
+      <div class="anchor" tabindex="0" data-layer="shifts">
+        <span class="code">P1</span>
+        <div><h3>换栈</h3><p>从技能栈到判断栈：定义问题、编排智能体、验证结果、承担后果。</p></div>
+        <div class="acts">作用层 / 变化层</div>
+      </div>
+      <div class="anchor" tabindex="0" data-layer="constants">
+        <span class="code">P2</span>
+        <div><h3>建资产</h3><p>作品、声誉、关系、专有经验——无法被一次性生成的东西。</p></div>
+        <div class="acts">作用层 / 常量层</div>
+      </div>
+      <div class="anchor" tabindex="0" data-layer="shifts">
+        <span class="code">P3</span>
+        <div><h3>做编排者</h3><p>一个人加一组智能体，就是一家公司。学会委派、设定标准、验收。</p></div>
+        <div class="acts">作用层 / 变化层</div>
+      </div>
+      <div class="anchor" tabindex="0" data-layer="constants">
+        <span class="code">P4</span>
+        <div><h3>保反脆弱</h3><p>多元收入、低成本试验、持续的学习带宽。</p></div>
+        <div class="acts">作用层 / 常量层</div>
+      </div>
+
+      <div class="group-label"><b>02</b> 组织 · Organization</div>
+      <div class="anchor" tabindex="0" data-layer="mechanisms">
+        <span class="code">O1</span>
+        <div><h3>重设计流程</h3><p>先问「这件事还需要人做吗」，再问「用什么工具」。</p></div>
+        <div class="acts">作用层 / 机制层</div>
+      </div>
+      <div class="anchor" tabindex="0" data-layer="mechanisms">
+        <span class="code">O2</span>
+        <div><h3>小前台 + 强中台</h3><p>把知识、数据与判断沉淀为组织资产，让一线随时调用。</p></div>
+        <div class="acts">作用层 / 机制层</div>
+      </div>
+      <div class="anchor" tabindex="0" data-layer="shifts">
+        <span class="code">O3</span>
+        <div><h3>人机分工</h3><p>机器负责广度与速度，人负责深度与责任。</p></div>
+        <div class="acts">作用层 / 变化层</div>
+      </div>
+      <div class="anchor" tabindex="0" data-layer="constants">
+        <span class="code">O4</span>
+        <div><h3>度量转向</h3><p>从产出量转向结果、信任与长期价值。</p></div>
+        <div class="acts">作用层 / 常量层</div>
+      </div>
+
+      <div class="group-label"><b>03</b> 社会 · Society</div>
+      <div class="anchor" tabindex="0" data-layer="constants">
+        <span class="code">S1</span>
+        <div><h3>教育转向</h3><p>从传授知识到训练判断：项目制、提问、终身学习。</p></div>
+        <div class="acts">作用层 / 常量层</div>
+      </div>
+      <div class="anchor" tabindex="0" data-layer="mechanisms">
+        <span class="code">S2</span>
+        <div><h3>制度补位</h3><p>社会保障、再分配、AI 责任与透明度框架。</p></div>
+        <div class="acts">作用层 / 机制层</div>
+      </div>
+      <div class="anchor" tabindex="0" data-layer="mechanisms">
+        <span class="code">S3</span>
+        <div><h3>公共基础设施</h3><p>算力、数据、模型的可及性，避免能力垄断。</p></div>
+        <div class="acts">作用层 / 机制层</div>
+      </div>
+
+      <div class="legend">
+        <div class="row"><span class="swatch shift"></span>变化层 · 看得见，变化快</div>
+        <div class="row"><span class="swatch mech"></span>机制层 · 反复起作用</div>
+        <div class="row"><span class="swatch const"></span>常量层 · 变化冲不走</div>
+        <div class="tip">锚点越深，越抗震荡。多数人的应对停在变化层，所以总在追新闻。</div>
+      </div>
+    </aside>
+  </main>
+
+  <!-- TITLE BLOCK -->
+  <footer class="titleblock" aria-label="图纸标题栏">
+    <div class="tb-cell big"><small>Project / 图名</small><b>智能时代知识地图 · 剖面图</b></div>
+    <div class="tb-cell"><small>Drawing No.</small><b>KM-01</b></div>
+    <div class="tb-cell"><small>Scale / Date</small><b>1:1 &nbsp;·&nbsp; 2026.10</b></div>
+    <div class="tb-cell"><small>Revision / Status</small><b class="red">REV. A — 供讨论</b></div>
+  </footer>
+  <div class="footer">
+    <span>四个方案之一 · 剖面 / Section &nbsp;—&nbsp; 用结构代替清单，用锚点代替焦虑。</span>
+    <span class="src">CLAUDE / KNOWLEDGE MAP SERIES / 01</span>
+  </div>
+</div>
+
+<script>
+  const bands = [...document.querySelectorAll('.band')];
+  const anchors = [...document.querySelectorAll('.anchor')];
+  function hint(layer){
+    bands.forEach(b => b.classList.toggle('hot', b.dataset.layer === layer));
+  }
+  anchors.forEach(a => {
+    a.addEventListener('mouseenter', () => hint(a.dataset.layer));
+    a.addEventListener('focus', () => hint(a.dataset.layer));
+    a.addEventListener('mouseleave', () => hint(null));
+    a.addEventListener('blur', () => hint(null));
+  });
+</script>
+</body>
+</html>

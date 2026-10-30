@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>方案 04 · 智能时代应对手册</title>
+<style>
+  :root{
+    --desk:#131512;
+    --paper:#e6e5de;
+    --paper-2:#dbdad2;
+    --ink:#171a17;
+    --grey:#71766f;
+    --faint:#969a92;
+    --rule:#b8b7ac;
+    --orange:#df4a1e;
+    --orange-deep:#b93a14;
+    --blue:#25457c;
+    --mono:"Consolas","SFMono-Regular","Menlo","Cascadia Mono",monospace;
+    --sans:"Microsoft YaHei","PingFang SC","Hiragino Sans GB","Helvetica Neue",Arial,sans-serif;
+    --display:"Arial Black","Helvetica Neue","Microsoft YaHei",sans-serif;
+    --kai:"KaiTi","STKaiti","FangSong",serif;
+  }
+  *{box-sizing:border-box}
+  html{background:var(--desk)}
+  body{
+    margin:0;background:
+      radial-gradient(1200px 700px at 50% -10%,rgba(255,255,255,.05),transparent 60%),
+      var(--desk);
+    color:var(--ink);font-family:var(--sans);line-height:1.7;-webkit-font-smoothing:antialiased;
+  }
+  .desk{max-width:1160px;margin:0 auto;padding:34px 22px 60px}
+  .manual{display:flex;flex-direction:column;gap:16px}
+
+  /* ---------- shared page ---------- */
+  .page{
+    position:relative;background:var(--paper);
+    padding:26px 42px 30px 84px;
+    box-shadow:0 2px 0 rgba(0,0,0,.25),0 20px 44px rgba(0,0,0,.3);
+    overflow:hidden;
+  }
+  .page::before{
+    content:"";position:absolute;left:58px;top:0;bottom:0;width:1px;background:rgba(23,26,23,.16);
+  }
+  .page::after{
+    content:"";position:absolute;inset:0;pointer-events:none;opacity:.22;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='.12'/%3E%3C/svg%3E");
+    mix-blend-mode:multiply;
+  }
+  .margin{
+    position:absolute;left:16px;top:24px;bottom:24px;width:30px;
+    display:flex;flex-direction:column;align-items:center;justify-content:space-between;
+    font-family:var(--mono);font-size:8px;letter-spacing:.14em;color:var(--faint);
+  }
+  .margin .vertical{
+    writing-mode:vertical-rl;transform:rotate(180deg);letter-spacing:.22em;
+    text-transform:uppercase;color:var(--faint);
+  }
+  .margin .pg{color:var(--ink);font-size:9px}
+  .page-head{
+    display:grid;grid-template-columns:40px 1fr auto;gap:14px;align-items:start;
+    border-bottom:2px solid var(--ink);padding-bottom:12px;margin-bottom:22px;
+  }
+  .sec-no{
+    width:36px;height:36px;background:var(--orange);color:var(--paper);
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:.02em;
+  }
+  .page-head h2{margin:0;font-size:clamp(24px,3vw,34px);line-height:1.15;letter-spacing:.05em;font-weight:900}
+  .page-head .en{display:block;font-family:var(--mono);font-size:8.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--grey);margin-top:6px}
+  .page-head .pgn{font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--grey);padding-top:5px;white-space:nowrap}
+  .page-foot{
+    display:flex;justify-content:space-between;gap:20px;align-items:baseline;
+    border-top:1px solid var(--rule);margin-top:26px;padding-top:8px;
+    font-family:var(--mono);font-size:7.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);
+  }
+  .note{
+    font-family:var(--kai);font-size:14px;line-height:1.7;color:var(--blue);
+    transform:rotate(-1.2deg);margin:16px 0 0;max-width:520px;
+  }
+  .note::before{content:"※ ";font-family:var(--sans);font-size:10px}
+  .stamp{
+    display:inline-block;border:2px solid var(--orange);color:var(--orange);
+    font-family:var(--mono);font-size:8px;letter-spacing:.2em;text-transform:uppercase;
+    padding:5px 9px;transform:rotate(-3deg);
+  }
+
+  /* ---------- cover ---------- */
+  .cover{
+    background:var(--ink);color:var(--paper);padding:44px 48px 38px 84px;
+    position:relative;overflow:hidden;
+    box-shadow:0 2px 0 rgba(0,0,0,.35),0 24px 54px rgba(0,0,0,.42);
+  }
+  .cover::before{
+    content:"04";position:absolute;right:-14px;top:-52px;
+    font-family:var(--display);font-size:clamp(220px,30vw,380px);line-height:1;
+    color:transparent;-webkit-text-stroke:1px rgba(230,229,222,.16);
+  }
+  .cover-top{display:flex;justify-content:space-between;gap:20px;align-items:baseline;
+    font-family:var(--mono);font-size:8.5px;letter-spacing:.22em;text-transform:uppercase;color:#8d9188;
+    border-bottom:1px solid rgba(230,229,222,.2);padding-bottom:10px;position:relative;z-index:1}
+  .cover-top b{color:var(--orange);font-weight:400}
+  .cover-main{position:relative;z-index:1;display:grid;grid-template-columns:1fr 300px;gap:44px;align-items:end;padding:48px 0 38px}
+  .cover-kicker{font-family:var(--mono);font-size:9px;letter-spacing:.26em;text-transform:uppercase;color:var(--orange);margin-bottom:18px}
+  .cover h1{margin:0;font-family:var(--display);font-weight:900;font-size:clamp(48px,6.6vw,92px);line-height:1.02;letter-spacing:.02em;color:#f0eee4}
+  .cover h1 span{display:block;color:var(--orange)}
+  .cover-dek{margin:20px 0 0;font-size:14px;line-height:1.9;color:#b7b8ae;max-width:540px}
+  .cover-side{border-left:1px solid rgba(230,229,222,.25);padding-left:24px}
+  .cover-side .label{font-family:var(--mono);font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:#8d9188;margin-bottom:10px}
+  .cover-side p{margin:0 0 14px;font-size:11.5px;line-height:1.85;color:#c8c8bd}
+  .progress-box{border:1px solid rgba(230,229,222,.28);padding:10px 12px;margin-top:14px}
+  .progress-box .num{font-family:var(--mono);font-size:18px;color:var(--orange);letter-spacing:.06em}
+  .progress-box .cap{font-family:var(--mono);font-size:7.5px;letter-spacing:.16em;text-transform:uppercase;color:#8d9188;margin-top:3px}
+  .cover-bottom{position:relative;z-index:1;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid rgba(230,229,222,.25);padding-top:14px;gap:18px}
+  .cover-bottom div{font-family:var(--mono);font-size:7.5px;letter-spacing:.16em;text-transform:uppercase;color:#8d9188}
+  .cover-bottom b{display:block;font-family:var(--sans);font-size:11px;letter-spacing:.04em;color:#dedcd0;font-weight:400;margin-top:3px}
+
+  /* ---------- judgments ---------- */
+  .judgments{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--ink)}
+  .judgment{padding:20px 22px 8px 0;border-right:1px solid var(--rule);position:relative}
+  .judgment:last-child{border-right:0;padding-right:0}
+  .judgment .big{
+    font-family:var(--display);font-size:clamp(54px,6vw,82px);line-height:.8;
+    color:transparent;-webkit-text-stroke:1px var(--orange);margin-bottom:14px;
+  }
+  .judgment h3{margin:0 0 8px;font-size:17px;line-height:1.45;letter-spacing:.02em}
+  .judgment p{margin:0;font-size:11.5px;line-height:1.8;color:#393d38}
+  .judgment .tagline{display:inline-block;margin-top:12px;font-family:var(--mono);font-size:7.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--grey);border-bottom:1px solid var(--orange);padding-bottom:2px}
+
+  /* ---------- change table ---------- */
+  .change-table{border-top:2px solid var(--ink)}
+  .ch-row{
+    display:grid;grid-template-columns:48px 96px 1.25fr 1.35fr;gap:14px;
+    padding:11px 0;border-bottom:1px solid var(--rule);align-items:start;
+  }
+  .ch-row.head{
+    font-family:var(--mono);font-size:7.5px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--grey);border-bottom:1px solid var(--ink);padding:8px 0;
+  }
+  .ch-row .code{font-family:var(--mono);font-size:9px;color:var(--orange);letter-spacing:.05em;padding-top:2px}
+  .ch-row .name{font-size:12.5px;font-weight:700;letter-spacing:.04em}
+  .ch-row .signal{font-size:10.5px;line-height:1.65;color:#4a4e48}
+  .ch-row .meaning{font-size:10.5px;line-height:1.65;color:var(--ink)}
+  .ch-row .meaning b{background:linear-gradient(transparent 62%,rgba(223,74,30,.22) 62%);font-weight:700}
+
+  /* ---------- checklists ---------- */
+  .lists{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--ink)}
+  .list-col{padding:16px 20px 4px 0;border-right:1px solid var(--rule)}
+  .list-col:last-child{border-right:0;padding-right:0}
+  .list-col .col-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+  .list-col .col-head h3{margin:0;font-size:14px;letter-spacing:.08em}
+  .list-col .col-head span{font-family:var(--mono);font-size:8px;color:var(--grey);letter-spacing:.1em}
+  .check{
+    display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid rgba(23,26,23,.12);
+    cursor:pointer;
+  }
+  .check input{
+    appearance:none;-webkit-appearance:none;width:15px;height:15px;border:1.5px solid var(--ink);
+    margin:2px 0 0;flex:none;position:relative;background:transparent;cursor:pointer;
+  }
+  .check input:checked{background:var(--orange);border-color:var(--orange)}
+  .check input:checked::after{
+    content:"";position:absolute;left:4px;top:1px;width:4px;height:8px;
+    border:solid var(--paper);border-width:0 2px 2px 0;transform:rotate(45deg);
+  }
+  .check input:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+  .check-text b{display:block;font-size:11px;letter-spacing:.03em;margin-bottom:1px}
+  .check-text em{display:block;font-style:normal;font-size:9.5px;line-height:1.55;color:var(--grey)}
+  .check input:checked ~ .check-text b{text-decoration:line-through;text-decoration-color:var(--orange);opacity:.55}
+  .check input:checked ~ .check-text em{opacity:.5}
+
+  /* ---------- ladder ---------- */
+  .ladder-intro{display:grid;grid-template-columns:1fr 300px;gap:36px;align-items:start;margin-bottom:22px}
+  .ladder-intro p{margin:0;font-size:12px;line-height:1.85;color:#393d38}
+  .ladder-scale{border:1px solid var(--ink);display:grid;grid-template-columns:repeat(6,1fr);margin-top:10px}
+  .lstep{padding:13px 10px 15px;border-right:1px solid var(--ink);position:relative;min-height:112px}
+  .lstep:last-child{border-right:0}
+  .lstep .n{font-family:var(--mono);font-size:7.5px;letter-spacing:.1em;color:var(--faint)}
+  .lstep h4{margin:5px 0 4px;font-size:12px;letter-spacing:.06em}
+  .lstep p{margin:0;font-size:9px;line-height:1.55;color:var(--grey)}
+  .lstep.hot{background:var(--orange);color:var(--paper)}
+  .lstep.hot .n{color:rgba(230,229,222,.6)}
+  .lstep.hot p{color:rgba(230,229,222,.8)}
+  .ladder-pointer{display:grid;grid-template-columns:repeat(6,1fr);font-family:var(--mono);font-size:7.5px;letter-spacing:.08em;color:var(--faint);margin-top:6px}
+  .ladder-pointer span{text-align:center}
+  .ladder-pointer .on{color:var(--orange);font-weight:700}
+  .ladder-note{display:flex;justify-content:space-between;gap:30px;align-items:baseline;margin-top:16px;padding-top:12px;border-top:1px solid var(--rule)}
+  .ladder-note p{margin:0;font-size:12px;line-height:1.8;max-width:650px}
+  .ladder-note p b{background:linear-gradient(transparent 62%,rgba(223,74,30,.24) 62%)}
+
+  /* ---------- 90 days ---------- */
+  .days{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--ink)}
+  .day-col{padding:16px 20px 4px 0;border-right:1px solid var(--rule)}
+  .day-col:last-child{border-right:0;padding-right:0}
+  .day-col .day-head{border-bottom:1px solid var(--ink);padding-bottom:8px;margin-bottom:4px;display:flex;justify-content:space-between;align-items:baseline}
+  .day-col .day-head b{font-size:14px;letter-spacing:.06em}
+  .day-col .day-head span{font-family:var(--mono);font-size:8px;color:var(--orange);letter-spacing:.12em}
+  .day-col .goal{font-size:9.5px;color:var(--grey);margin:7px 0 2px;line-height:1.6}
+
+  /* ---------- self check ---------- */
+  .selfcheck{display:grid;grid-template-columns:1fr 1fr;gap:0 34px}
+  .qc{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid rgba(23,26,23,.13)}
+  .qc .qno{font-family:var(--mono);font-size:8px;color:var(--orange);padding-top:2px;width:20px;flex:none}
+  .qc .qt{font-size:11px;line-height:1.65}
+  .qc input{
+    appearance:none;width:14px;height:14px;border:1.5px solid var(--ink);
+    margin:2px 0 0;flex:none;position:relative;background:transparent;cursor:pointer;
+  }
+  .qc input:checked{background:var(--blue);border-color:var(--blue)}
+  .qc input:checked::after{
+    content:"";position:absolute;left:3.5px;top:1px;width:4px;height:8px;
+    border:solid var(--paper);border-width:0 2px 2px 0;transform:rotate(45deg);
+  }
+  .selfcheck-note{
+    margin-top:18px;padding:13px 16px;border-left:4px solid var(--orange);
+    background:rgba(223,74,30,.08);font-size:11.5px;line-height:1.8;
+  }
+
+  /* ---------- tear out ---------- */
+  .perf{
+    margin-top:34px;display:flex;align-items:center;gap:12px;
+    font-family:var(--mono);font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:#8d9188;
+  }
+  .perf::before,.perf::after{content:"";flex:1;border-top:1px dashed rgba(230,229,222,.35)}
+  .tearout{
+    margin:0 auto;max-width:720px;background:var(--orange);color:var(--ink);
+    padding:26px 32px 24px;transform:rotate(-1.1deg);
+    box-shadow:0 20px 40px rgba(0,0,0,.38);position:relative;
+  }
+  .tearout::before{
+    content:"";position:absolute;left:0;right:0;top:-1px;height:8px;
+    background:radial-gradient(circle at 4px 0,var(--desk) 4px,transparent 4.5px) 0 0/18px 8px repeat-x;
+  }
+  .tearout-top{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid rgba(23,26,23,.45);padding-bottom:8px;font-family:var(--mono);font-size:8px;letter-spacing:.18em;text-transform:uppercase}
+  .tearout h2{margin:18px 0 10px;font-family:var(--display);font-size:clamp(24px,3.4vw,38px);line-height:1.25;letter-spacing:.01em}
+  .tearout .q{margin:0;font-size:12px;line-height:1.9}
+  .tearout .q span{font-family:var(--mono);font-size:9px;margin-right:6px;opacity:.65}
+  .tearout-bottom{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid rgba(23,26,23,.45);margin-top:16px;padding-top:8px;font-family:var(--mono);font-size:7.5px;letter-spacing:.14em;text-transform:uppercase}
+  .tearout-bottom b{font-weight:700}
+  .desk-foot{display:flex;justify-content:space-between;gap:20px;margin-top:20px;font-family:var(--mono);font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:#6f746c}
+
+  @media (max-width:960px){
+    .cover-main{grid-template-columns:1fr;gap:26px;align-items:start}
+    .cover-side{border-left:0;border-top:1px solid rgba(230,229,222,.25);padding-left:0;padding-top:16px}
+    .judgments{grid-template-columns:1fr}
+    .judgment{border-right:0;border-bottom:1px solid var(--rule);padding:18px 0}
+    .judgment:last-child{border-bottom:0}
+    .lists,.days{grid-template-columns:1fr}
+    .list-col,.day-col{border-right:0;border-bottom:1px solid var(--rule);padding:16px 0}
+    .list-col:last-child,.day-col:last-child{border-bottom:0}
+    .ladder-intro{grid-template-columns:1fr;gap:14px}
+    .ch-row{grid-template-columns:42px 84px 1fr;gap:10px}
+    .ch-row .meaning{grid-column:3}
+    .ch-row.head span:last-child{display:none}
+  }
+  @media (max-width:620px){
+    .desk{padding:14px 8px 40px}
+    .page{padding:20px 18px 22px 56px}
+    .page::before{left:40px}
+    .margin{left:8px;width:24px}
+    .cover{padding:28px 20px 26px 56px}
+    .cover h1{font-size:clamp(38px,9vw,54px)}
+    .cover-bottom{grid-template-columns:1fr 1fr}
+    .page-head{grid-template-columns:34px 1fr;gap:10px}
+    .page-head .pgn{grid-column:2;padding-top:0}
+    .ladder-scale{grid-template-columns:1fr 1fr}
+    .lstep:nth-child(2n){border-right:0}
+    .lstep:nth-child(-n+4){border-bottom:1px solid var(--ink)}
+    .ladder-pointer{display:none}
+    .selfcheck{grid-template-columns:1fr}
+    .tearout{padding:20px 20px 18px}
+    .ch-row{grid-template-columns:1fr;gap:2px;padding:12px 0}
+    .ch-row.head{display:none}
+    .ch-row .meaning{grid-column:auto}
+    .ch-row .name{font-size:13px}
+    .desk-foot{flex-direction:column;gap:6px}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+  @media print{
+    .desk{padding:0;max-width:none}
+    .page,.cover,.tearout{box-shadow:none;break-after:page}
+    .tearout{transform:none}
+    body{background:#fff}
+  }
+</style>
+</head>
+<body>
+<div class="desk">
+  <div class="manual">
+
+    <!-- COVER -->
+    <header class="cover">
+      <div class="cover-top">
+        <span>Field Manual / <b>KM-04</b> / Version 1.0</span>
+        <span>2026.10 &nbsp;·&nbsp; 随身版</span>
+      </div>
+      <div class="cover-main">
+        <div>
+          <div class="cover-kicker">A manual for the intelligent age</div>
+          <h1>智能时代<span>应对手册</span></h1>
+          <p class="cover-dek">不预测未来，只整理那些在多数未来里都成立的动作。读一遍，勾一遍，九十天后再看一遍。</p>
+        </div>
+        <div class="cover-side">
+          <div class="label">使用说明 / How to use</div>
+          <p>这不是一本读完就结束的书。它是一份可以勾选、可以撕下、可以带走的行动清单。</p>
+          <p>工具会过时。判断不会。</p>
+          <div class="progress-box">
+            <div class="num"><span id="globalProgress">0</span> / 30</div>
+            <div class="cap">已完成 / Completed</div>
+          </div>
+        </div>
+      </div>
+      <div class="cover-bottom">
+        <div>适用<b>个人 · 组织 · 社会</b></div>
+        <div>结构<b>6 节 + 1 张随身卡</b></div>
+        <div>用法<b>读一遍 · 勾一遍 · 90 天后复看</b></div>
+        <div>版本<b>V1.0 / 2026.10</b></div>
+      </div>
+    </header>
+
+    <!-- 00 JUDGMENTS -->
+    <section class="page" id="sec00">
+      <div class="margin"><span class="pg">P.01</span><span class="vertical">Field Manual · KM-04</span><span>00</span></div>
+      <div class="page-head">
+        <div class="sec-no">00</div>
+        <div><h2>三个判断</h2><span class="en">Three Judgements Before Anything Else</span></div>
+        <div class="pgn">SEC.00 / P.01</div>
+      </div>
+      <div class="judgments">
+        <article class="judgment">
+          <div class="big">01</div>
+          <h3>智能会变成基础设施。</h3>
+          <p>像电一样便宜，像网络一样无处不在。它不再是某个行业，而是所有行业的地板。</p>
+          <span class="tagline">Infrastructure, not industry</span>
+        </article>
+        <article class="judgment">
+          <div class="big">02</div>
+          <h3>瓶颈会从执行转移到判断、验证与信任。</h3>
+          <p>生成变便宜了，验证没有。谁能判断真假、好坏、值不值得，谁就站在新的瓶颈上。</p>
+          <span class="tagline">Generation is cheap. Verification is not.</span>
+        </article>
+        <article class="judgment">
+          <div class="big">03</div>
+          <h3>应对不是学更多工具，而是重设分工。</h3>
+          <p>重新划分人与智能的工作：机器做广度与速度，人做深度、责任与意义。</p>
+          <span class="tagline">Redivide the work</span>
+        </article>
+      </div>
+      <p class="note">工具会过时，判断不会。先把判断的坐标定下来，再谈工具。</p>
+      <div class="page-foot"><span>Field Manual / KM-04</span><span>Judgements</span><span>P.01</span></div>
+    </section>
+
+    <!-- 01 CHANGE TABLE -->
+    <section class="page" id="sec01">
+      <div class="margin"><span class="pg">P.02</span><span class="vertical">Field Manual · KM-04</span><span>01</span></div>
+      <div class="page-head">
+        <div class="sec-no">01</div>
+        <div><h2>变化速查表</h2><span class="en">Change Quick Reference</span></div>
+        <div class="pgn">SEC.01 / P.02</div>
+      </div>
+      <div class="change-table">
+        <div class="ch-row head"><span>Code</span><span>变化</span><span>你会看到的信号</span><span>对你的含义</span></div>
+        <div class="ch-row"><span class="code">S-01</span><span class="name">成本坍缩</span><span class="signal">一份报告、一段代码、一张图的成本下降 90%+</span><span class="meaning">执行不再稀缺，<b>判断与验收</b>开始稀缺。</span></div>
+        <div class="ch-row"><span class="code">S-02</span><span class="name">生产重构</span><span class="signal">一人公司、三人团队、Agent 工作流</span><span class="meaning">组织规模不再是产能的前提，<b>编排能力</b>才是。</span></div>
+        <div class="ch-row"><span class="code">S-03</span><span class="name">市场极化</span><span class="signal">内容过剩、渠道扁平、中间商消失</span><span class="meaning">注意力与信任成为终极稀缺，<b>差异化</b>要有证据。</span></div>
+        <div class="ch-row"><span class="code">S-04</span><span class="name">认知迁移</span><span class="signal">「会做」不再值钱，「知道做什么」值钱</span><span class="meaning">记忆贬值，<b>提问、审美、担责</b>升值。</span></div>
+        <div class="ch-row"><span class="code">S-05</span><span class="name">结构震荡</span><span class="signal">初级白领岗位收缩，资深判断者溢价</span><span class="meaning">职业极化：顶部放大、底部服务、<b>中间空心</b>。</span></div>
+        <div class="ch-row"><span class="code">S-06</span><span class="name">意义追问</span><span class="signal">意义感、心理健康、生活设计成为刚需</span><span class="meaning">工作与身份解绑，<b>人何以为人</b>变成日常问题。</span></div>
+      </div>
+      <p class="note">信号用来观察，不用来做长期决策。长期决策要回到机制层。</p>
+      <div class="page-foot"><span>Field Manual / KM-04</span><span>Change Reference</span><span>P.02</span></div>
+    </section>
+
+    <!-- 02 CHECKLIST -->
+    <section class="page" id="sec02">
+      <div class="margin"><span class="pg">P.03</span><span class="vertical">Field Manual · KM-04</span><span>02</span></div>
+      <div class="page-head">
+        <div class="sec-no">02</div>
+        <div><h2>应对清单</h2><span class="en">Response Checklist</span></div>
+        <div class="pgn">SEC.02 / P.03</div>
+      </div>
+      <div class="lists">
+        <div class="list-col">
+          <div class="col-head"><h3>个人</h3><span>4 项 / <b data-count-for="personal">0</b></span></div>
+          <label class="check"><input type="checkbox" data-key="p1"><span class="check-text"><b>换栈</b><em>把学习重心移到定义问题、编排、验收、担责。</em></span></label>
+          <label class="check"><input type="checkbox" data-key="p2"><span class="check-text"><b>建资产</b><em>积累作品、声誉、关系与专有经验。</em></span></label>
+          <label class="check"><input type="checkbox" data-key="p3"><span class="check-text"><b>做编排者</b><em>跑通至少一条「人 + 智能体」的工作流。</em></span></label>
+          <label class="check"><input type="checkbox" data-key="p4"><span class="check-text"><b>保反脆弱</b><em>保留多元收入与低成本试验的空间。</em></span></label>
+        </div>
+        <div class="list-col">
+          <div class="col-head"><h3>组织</h3><span>4 项 / <b data-count-for="org">0</b></span></div>
+          <label class="check"><input type="checkbox" data-key="o1"><span class="check-text"><b>重设计流程</b><em>先问还需不需要人做，再问用什么工具。</em></span></label>
+          <label class="check"><input type="checkbox" data-key="o2"><span class="check-text"><b>小前台 + 强中台</b><em>让知识、数据与判断可被一线调用。</em></span></label>
+          <label class="check"><input type="checkbox" data-key="o3"><span class="check-text"><b>人机分工</b><em>机器做广度与速度，人做深度与责任。</em></span></label>
+          <label class="check"><input type="checkbox" data-key="o4"><span class="check-text"><b>度量转向</b><em>从产出量转向结果、信任与长期价值。</em></span></label>
+        </div>
+        <div class="list-col">
+          <div class="col-head"><h3>社会</h3><span>3 项 / <b data-count-for="society">0</b></span></div>
+          <label class="check"><input type="checkbox" data-key="s1"><span class="check-text"><b>教育转向</b><em>训练判断、提问与项目协作。</em></span></label>
+          <label class="check"><input type="checkbox" data-key="s2"><span class="check-text"><b>制度补位</b><em>社会保障、再分配、AI 责任框架。</em></span></label>
+          <label class="check"><input type="checkbox" data-key="s3"><span class="check-text"><b>公共设施</b><em>算力、数据、模型的可及性。</em></span></label>
+        </div>
+      </div>
+      <p class="note">勾选不是目的，跑通才是。每一项都应该对应一个可观察的动作。</p>
+      <div class="page-foot"><span>Field Manual / KM-04</span><span>Checklist</span><span>P.03</span></div>
+    </section>
+
+    <!-- 03 LADDER -->
+    <section class="page" id="sec03">
+      <div class="margin"><span class="pg">P.04</span><span class="vertical">Field Manual · KM-04</span><span>03</span></div>
+      <div class="page-head">
+        <div class="sec-no">03</div>
+        <div><h2>杠杆阶梯</h2><span class="en">Leverage Ladder</span></div>
+        <div class="pgn">SEC.03 / P.04</div>
+      </div>
+      <div class="ladder-intro">
+        <p>同样的力气，用在不同的层级，结果差一个数量级。买工具是参数层，改流程是流程层；改度量、改目标、改对「工作」的定义，才进入高杠杆区。多数人停在第一层，所以总在追新工具。</p>
+        <div class="stamp">力度 ≠ 努力程度</div>
+      </div>
+      <div class="ladder-scale">
+        <div class="lstep"><div class="n">01 / PARAMETER</div><h4>参数</h4><p>补贴、价格、算力配额。最快见效，也最容易被抵消。</p></div>
+        <div class="lstep"><div class="n">02 / PROCESS</div><h4>流程</h4><p>重设计工作流、审批链、交付方式。</p></div>
+        <div class="lstep"><div class="n">03 / INFORMATION</div><h4>信息流</h4><p>度量什么、公开什么、谁看得见。</p></div>
+        <div class="lstep"><div class="n">04 / RULES</div><h4>规则</h4><p>责任归属、准入、分配。</p></div>
+        <div class="lstep hot"><div class="n">05 / GOALS</div><h4>目标</h4><p>为什么做、为谁做。目标一变，流程才会真变。</p></div>
+        <div class="lstep hot"><div class="n">06 / PARADIGM</div><h4>范式</h4><p>什么算工作、什么算教育、什么算价值。</p></div>
+      </div>
+      <div class="ladder-pointer"><span>低</span><span></span><span></span><span></span><span class="on">高杠杆</span><span class="on">最高</span></div>
+      <div class="ladder-note">
+        <p>如果只能做一件事，去改<b>度量</b>；如果能做两件，再去改<b>目标</b>。度量一变，行为才会真变。</p>
+        <span class="stamp">先改度量，再改目标</span>
+      </div>
+      <div class="page-foot"><span>Field Manual / KM-04</span><span>Leverage</span><span>P.04</span></div>
+    </section>
+
+    <!-- 04 90 DAYS -->
+    <section class="page" id="sec04">
+      <div class="margin"><span class="pg">P.05</span><span class="vertical">Field Manual · KM-04</span><span>04</span></div>
+      <div class="page-head">
+        <div class="sec-no">04</div>
+        <div><h2>九十天行动</h2><span class="en">A 90-Day Protocol</span></div>
+        <div class="pgn">SEC.04 / P.05</div>
+      </div>
+      <div class="days">
+        <div class="day-col">
+          <div class="day-head"><b>第 1–30 天</b><span>盘点 / DELEGATE</span></div>
+          <p class="goal">目标：找到可以被委派的工作，而不是先买工具。</p>
+          <label class="check"><input type="checkbox" data-key="d1"><span class="check-text"><b>列清单</b><em>列出你工作中 10 个可委派的任务。</em></span></label>
+          <label class="check"><input type="checkbox" data-key="d2"><span class="check-text"><b>跑两条</b><em>选 2 个任务，跑通「人 + 智能体」工作流。</em></span></label>
+          <label class="check"><input type="checkbox" data-key="d3"><span class="check-text"><b>记数据</b><em>记录每次节省的时间与错误率。</em></span></label>
+        </div>
+        <div class="day-col">
+          <div class="day-head"><b>第 31–60 天</b><span>验证 / VERIFY</span></div>
+          <p class="goal">目标：让产出可被信任，而不是看起来不错。</p>
+          <label class="check"><input type="checkbox" data-key="d4"><span class="check-text"><b>写标准</b><em>为每条工作流写清验收标准。</em></span></label>
+          <label class="check"><input type="checkbox" data-key="d5"><span class="check-text"><b>建清单</b><em>建立一份事实核查与质量检查清单。</em></span></label>
+          <label class="check"><input type="checkbox" data-key="d6"><span class="check-text"><b>公开案例</b><em>把一个完整案例整理成可展示的作品。</em></span></label>
+        </div>
+        <div class="day-col">
+          <div class="day-head"><b>第 61–90 天</b><span>沉淀 / COMPOUND</span></div>
+          <p class="goal">目标：把一次性成果变成可复用资产。</p>
+          <label class="check"><input type="checkbox" data-key="d7"><span class="check-text"><b>写模板</b><em>把流程写成别人也能用的模板。</em></span></label>
+          <label class="check"><input type="checkbox" data-key="d8"><span class="check-text"><b>建知识库</b><em>把判断、数据与案例沉淀下来。</em></span></label>
+          <label class="check"><input type="checkbox" data-key="d9"><span class="check-text"><b>去分享</b><em>对外分享，积累可验证的信任。</em></span></label>
+        </div>
+      </div>
+      <p class="note">九十天后，不要问「我会了几个工具」，要问「我留下了什么资产」。</p>
+      <div class="page-foot"><span>Field Manual / KM-04</span><span>90-Day Protocol</span><span>P.05</span></div>
+    </section>
+
+    <!-- 05 SELF CHECK -->
+    <section class="page" id="sec05">
+      <div class="margin"><span class="pg">P.06</span><span class="vertical">Field Manual · KM-04</span><span>05</span></div>
+      <div class="page-head">
+        <div class="sec-no">05</div>
+        <div><h2>自检</h2><span class="en">Self-Audit</span></div>
+        <div class="pgn">SEC.05 / P.06</div>
+      </div>
+      <div class="selfcheck">
+        <div class="qc"><span class="qno">Q01</span><span class="qt">我能否用一句话说清自己的判断优势？</span><input type="checkbox" data-key="q1"></div>
+        <div class="qc"><span class="qno">Q02</span><span class="qt">我最近三个月是否有可展示的作品或案例？</span><input type="checkbox" data-key="q2"></div>
+        <div class="qc"><span class="qno">Q03</span><span class="qt">我是否有一套验证 AI 输出的固定方法？</span><input type="checkbox" data-key="q3"></div>
+        <div class="qc"><span class="qno">Q04</span><span class="qt">我的收入是否依赖单一雇主或单一技能？</span><input type="checkbox" data-key="q4"></div>
+        <div class="qc"><span class="qno">Q05</span><span class="qt">我每周是否有固定的学习与实验时间？</span><input type="checkbox" data-key="q5"></div>
+        <div class="qc"><span class="qno">Q06</span><span class="qt">我们是否重设计了流程，而不只是买了工具？</span><input type="checkbox" data-key="q6"></div>
+        <div class="qc"><span class="qno">Q07</span><span class="qt">我们组织里，谁对 AI 的产出负责？</span><input type="checkbox" data-key="q7"></div>
+        <div class="qc"><span class="qno">Q08</span><span class="qt">我们的度量是否还停留在产出量？</span><input type="checkbox" data-key="q8"></div>
+        <div class="qc"><span class="qno">Q09</span><span class="qt">我们是否知道哪些中间环节可以被压缩？</span><input type="checkbox" data-key="q9"></div>
+        <div class="qc"><span class="qno">Q10</span><span class="qt">如果明天所有工具换掉，我们还剩下什么？</span><input type="checkbox" data-key="q10"></div>
+      </div>
+      <div class="selfcheck-note">
+        <b>读法：</b>勾选表示「我已经能清楚回答」。如果一半以上答不上来，说明你的应对还停在工具层。问题本身比答案重要。
+      </div>
+      <div class="page-foot"><span>Field Manual / KM-04</span><span>Self-Audit</span><span>P.06</span></div>
+    </section>
+
+  </div>
+
+  <div class="perf">沿虚线撕下 · Tear along the line</div>
+  <section class="tearout" aria-label="随身卡">
+    <div class="tearout-top"><span>Pocket Card / 随身卡</span><span>KM-04</span></div>
+    <h2>执行会变便宜。<br>判断、信任与意义不会。</h2>
+    <p class="q"><span>01</span>我今天做的事，机器能不能做？</p>
+    <p class="q"><span>02</span>我积累的东西，能不能被一次性生成？</p>
+    <p class="q"><span>03</span>如果明天工具全换掉，我还剩下什么？</p>
+    <div class="tearout-bottom"><span>Field Manual / KM-04 / V1.0</span><b>Keep this card</b></div>
+  </section>
+
+  <div class="desk-foot">
+    <span>方案 04 · 手册 / Field Manual — 用行动代替焦虑</span>
+    <span>Claude / Knowledge Map Series / 04</span>
+  </div>
+</div>
+
+<script>
+(function(){
+  const KEY='km04-progress-v1';
+  let saved={};
+  try{ saved=JSON.parse(localStorage.getItem(KEY)||'{}'); }catch(e){ saved={}; }
+
+  const boxes=[...document.querySelectorAll('input[type="checkbox"][data-key]')];
+  boxes.forEach(cb=>{
+    if(saved[cb.dataset.key]) cb.checked=true;
+    cb.addEventListener('change',()=>{
+      saved[cb.dataset.key]=cb.checked;
+      try{ localStorage.setItem(KEY,JSON.stringify(saved)); }catch(e){}
+      update();
+    });
+  });
+
+  const groups={personal:['p1','p2','p3','p4'],org:['o1','o2','o3','o4'],society:['s1','s2','s3']};
+  function update(){
+    let total=0;
+    boxes.forEach(cb=>{ if(cb.checked) total++; });
+    document.getElementById('globalProgress').textContent=total;
+    Object.entries(groups).forEach(([g,keys])=>{
+      const n=keys.filter(k=>{
+        const cb=boxes.find(b=>b.dataset.key===k);
+        return cb && cb.checked;
+      }).length;
+      document.querySelectorAll(`[data-count-for="${g}"]`).forEach(el=>el.textContent=n);
+    });
+  }
+  update();
+})();
+</script>
+</body>
+</html>
