@@ -196,17 +196,6 @@
   .thesis strong{color:#f6efdd;font-weight:700;border-bottom:1px solid var(--copper)}
   .meta{display:grid;grid-template-columns:1fr 1fr;gap:12px 20px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#9aa4c4}
   .meta b{display:block;color:#f2ecdc;font-weight:400;font-size:12px;letter-spacing:.05em;margin-top:3px}
-  .essay-cta{
-    display:inline-flex;align-items:center;gap:10px;margin-top:20px;padding:9px 15px;
-    border:1px solid rgba(216,180,106,.45);border-radius:999px;
-    font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;
-    color:var(--gold-light);text-decoration:none;background:rgba(9,15,42,.4);
-    -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
-    transition:background .2s ease,border-color .2s ease,transform .2s ease;
-  }
-  .essay-cta:hover{background:rgba(216,180,106,.13);border-color:rgba(216,180,106,.85);transform:translateY(-1px)}
-  .essay-cta span{font-size:14px;line-height:1}
-
   /* chart layout */
   .chart-row{display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:clamp(22px,2.6vw,40px);align-items:start}
   .chart{
@@ -341,6 +330,125 @@
   @media (pointer:coarse){#trail,#cursor-dot,#cursor-ring{display:none}}
   @media (prefers-reduced-motion:reduce){#trail,#cursor-dot,#cursor-ring{display:none}}
 
+  /* integrated assignment text */
+  .brief{
+    display:grid;grid-template-columns:minmax(0,1.35fr) minmax(300px,.65fr);
+    gap:clamp(26px,4vw,60px);align-items:start;
+    border-top:1px solid var(--line);margin-top:8px;padding:30px 0 6px;
+  }
+  .brief-kicker{
+    font-family:var(--mono);font-size:9px;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--copper);margin-bottom:14px;
+  }
+  .brief-copy p{
+    margin:0 0 .9em;font-size:15.5px;line-height:1.98;color:#d2d7e6;text-align:justify;
+  }
+  .brief-copy p:last-child{margin-bottom:0}
+  .brief-card{
+    border:1px solid rgba(216,180,106,.3);border-radius:20px;
+    background:
+      linear-gradient(135deg,rgba(255,255,255,.08),rgba(255,255,255,0) 42%),
+      rgba(9,15,42,.55);
+    -webkit-backdrop-filter:blur(16px) saturate(1.2);
+    backdrop-filter:blur(16px) saturate(1.2);
+    padding:20px 22px;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 20px 50px rgba(0,0,0,.3);
+  }
+  .brief-card .h{
+    font-family:var(--mono);font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--copper);margin-bottom:10px;
+  }
+  .judgments{list-style:none;margin:0;padding:0;counter-reset:j}
+  .judgments li{
+    display:grid;grid-template-columns:26px 1fr;gap:8px;padding:10px 0;
+    border-bottom:1px solid rgba(216,180,106,.12);
+    font-family:var(--serif);font-size:15px;line-height:1.7;color:#e8e2d3;
+  }
+  .judgments li:last-child{border-bottom:0;padding-bottom:0}
+  .judgments li::before{
+    counter-increment:j;content:counter(j,decimal-leading-zero);
+    font-family:var(--mono);font-size:9px;color:var(--copper);padding-top:3px;
+  }
+
+  .notes{margin-top:46px}
+  .notes-head{
+    display:flex;justify-content:space-between;gap:24px;align-items:baseline;
+    border-top:1px solid var(--line);padding-top:22px;margin-bottom:6px;
+  }
+  .notes-head h2{
+    margin:0;font-family:var(--serif);font-size:clamp(22px,2.4vw,30px);
+    letter-spacing:.08em;color:#f6efdd;
+  }
+  .notes-head h2 span{font-size:.58em;color:var(--faint);letter-spacing:.14em;font-weight:400}
+  .notes-head .side{
+    font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);
+  }
+  .notes-lead{
+    margin:0 0 20px;font-size:13px;line-height:1.9;color:#aeb6cc;max-width:780px;
+  }
+  .note-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .note-card{
+    border:1px solid rgba(216,180,106,.22);border-radius:20px;
+    background:
+      linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,0) 42%),
+      rgba(9,15,42,.5);
+    -webkit-backdrop-filter:blur(14px) saturate(1.15);
+    backdrop-filter:blur(14px) saturate(1.15);
+    padding:22px 24px 18px;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 18px 40px rgba(0,0,0,.28);
+  }
+  .note-card.wide{grid-column:1/-1}
+  .note-card .n{font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--copper);margin-bottom:7px}
+  .note-card h3{margin:0 0 8px;font-family:var(--serif);font-size:19px;letter-spacing:.05em;color:#f3ead7}
+  .note-card p{margin:0;font-size:13.5px;line-height:1.9;color:#c5cbdc;text-align:justify}
+  .note-card .src{
+    margin-top:14px;padding-top:10px;border-top:1px solid rgba(216,180,106,.14);
+    font-family:var(--mono);font-size:8.5px;line-height:1.7;color:var(--faint);letter-spacing:.02em;
+  }
+
+  .closing{
+    display:grid;grid-template-columns:minmax(0,1.15fr) minmax(300px,.85fr);
+    gap:clamp(26px,4vw,48px);align-items:start;
+    border-top:1px solid var(--line);margin-top:50px;padding-top:26px;
+  }
+  .closing h2{
+    margin:0 0 12px;font-family:var(--serif);font-size:clamp(22px,2.4vw,30px);
+    letter-spacing:.08em;color:#f6efdd;
+  }
+  .closing h2 span{font-size:.58em;color:var(--faint);letter-spacing:.14em;font-weight:400}
+  .closing-text p{margin:0 0 .9em;font-size:14.5px;line-height:1.98;color:#c9cfdf;text-align:justify}
+  .practice-card{
+    border:1px solid rgba(216,180,106,.28);border-radius:20px;
+    background:
+      linear-gradient(135deg,rgba(255,255,255,.07),rgba(255,255,255,0) 42%),
+      rgba(9,15,42,.52);
+    -webkit-backdrop-filter:blur(14px) saturate(1.15);
+    backdrop-filter:blur(14px) saturate(1.15);
+    padding:20px 22px;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 18px 40px rgba(0,0,0,.28);
+  }
+  .practice-card h3{margin:0 0 8px;font-family:var(--serif);font-size:17px;letter-spacing:.06em;color:#f3ead7}
+  .practice-card ol{margin:0;padding-left:20px}
+  .practice-card li{font-size:12.5px;line-height:1.85;color:#c3c9d9;padding:3px 0}
+
+  .sources{margin-top:34px;border-top:1px solid var(--line);padding-top:20px}
+  .sources-head{display:flex;justify-content:space-between;gap:20px;align-items:baseline;margin-bottom:12px}
+  .sources-head h2{margin:0;font-family:var(--serif);font-size:20px;letter-spacing:.08em;color:#f6efdd}
+  .sources-head h2 span{font-size:.6em;color:var(--faint);letter-spacing:.14em;font-weight:400}
+  .sources-head .side{font-family:var(--mono);font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint)}
+  .source-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 30px}
+  .source-item{
+    display:grid;grid-template-columns:24px 1fr;gap:8px;padding:7px 0;
+    border-bottom:1px solid rgba(216,180,106,.08);
+    font-size:10px;line-height:1.7;color:var(--faint);
+  }
+  .source-item .c{font-family:var(--mono);font-size:8.5px;color:var(--copper);padding-top:1px}
+  .source-item a{
+    color:var(--muted);text-decoration:none;border-bottom:1px solid rgba(216,180,106,.2);
+    white-space:nowrap;
+  }
+  .source-item a:hover{color:var(--copper);border-bottom-color:var(--copper)}
+
   /* catalog */
   .catalog{
     margin-top:54px;border:1px solid rgba(216,180,106,.2);border-radius:26px;
@@ -381,6 +489,9 @@
     .readout{position:static;min-height:0}
     .cat-grid{grid-template-columns:1fr 1fr}
     .astro-main{left:88%;top:26%;opacity:.42}
+    .brief,.closing{grid-template-columns:1fr}
+    .note-grid{grid-template-columns:1fr}
+    .note-card.wide{grid-column:auto}
   }
   @media (max-width:640px){
     .plate{padding:0 16px}
@@ -401,7 +512,9 @@
     .catalog{padding:20px 18px 18px;margin-top:38px}
     .cat-grid{grid-template-columns:1fr}
     .meta{grid-template-columns:1fr 1fr}
-    .footer,.catalog-head{flex-direction:column;gap:6px}
+    .footer,.catalog-head,.notes-head,.sources-head{flex-direction:column;gap:6px}
+    .brief-copy p{font-size:15px}
+    .source-grid{grid-template-columns:1fr}
   }
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
   @media print{body{background:#fff;color:#111}.frame,body::after{display:none}}
@@ -584,15 +697,32 @@
         <div>Center<b>常量 / 不变</b></div>
         <div>Method<b>观测 / 非预测</b></div>
       </div>
-      <a class="essay-cta" href="essay.html">阅读作业正文 <span>→</span></a>
     </div>
   </header>
+
+  <section class="brief" aria-label="写在图前">
+    <div>
+      <div class="brief-kicker">写在图前 / Before the Map</div>
+      <div class="brief-copy">
+        <p>这份作业从一个很小的时刻开始。我打开一个对话框，贴进一段材料，几秒钟后得到一份看起来完整的答案。它写得比我从容，也比我校对得快。我盯着那段文字，第一次认真想，如果答案变得这么便宜，我还需要学习什么。</p>
+        <p>这张星图是我的回答。它把变化分成几层，中心是我认为不会轻易改变的东西，越往外，变化越快，也越接近可以动手的地方。图上的每一颗星都能点开。下面的笔记，是我查资料和读图时留下的几段想法，不是标准答案。</p>
+      </div>
+    </div>
+    <aside class="brief-card">
+      <div class="h">三个判断 / Three Notes</div>
+      <ol class="judgments">
+        <li>答案变便宜，判断变贵。</li>
+        <li>任务在移动，岗位不会同时消失。</li>
+        <li>信任需要时间，无法被一次性生成。</li>
+      </ol>
+    </aside>
+  </section>
 
   <main class="chart-row">
     <section class="chart" aria-label="智能时代星图">
       <div class="scroll-hint"><span>← 左右滑动查看星图</span><span>Scroll →</span></div>
       <div class="svg-scroll">
-        <svg id="sky" viewBox="-40 -40 1080 1080" role="img" aria-label="同心星图：中心为常量，内环为机制，中环为变化，外环为应对"></svg>
+        <svg id="sky" viewBox="-40 -40 1080 1080" role="img" aria-label="同心星图，中心为常量，内环为机制，中环为变化，外环为应对"></svg>
       </div>
       <div class="caption">
         <span><b>图 03</b> · 同心星图 / 越靠近中心，变化越慢</span>
@@ -608,12 +738,12 @@
       <div class="readout-body" id="readout">
         <div class="tag">How to read / 观测说明</div>
         <h2>四层同心，<br>越往里越慢</h2>
-        <p>这不是一张预测图，而是一张定位图。外圈热闹，内圈稳定。应对之所以有效，是因为它接住了内圈那些不变的东西。</p>
+        <p>这张图不预测未来，只帮人定位。外圈热闹，内圈稳定。应对之所以有效，是因为它接住了内圈那些不变的东西。</p>
         <ul class="rings">
-          <li><b>CENTER</b>常量 — 变化冲不走</li>
-          <li><b>INNER</b>机制 — 反复起作用</li>
-          <li><b>MIDDLE</b>变化 — 正在发生</li>
-          <li><b>OUTER</b>应对 — 可以动手</li>
+          <li><b>CENTER</b>常量 · 变化冲不走</li>
+          <li><b>INNER</b>机制 · 反复起作用</li>
+          <li><b>MIDDLE</b>变化 · 正在发生</li>
+          <li><b>OUTER</b>应对 · 可以动手</li>
         </ul>
         <p class="hint">悬停任意星点，读取它的坐标与关联。连线只会在被观测时出现。外环按行动主体着色。</p>
         <div class="legend-mini">
@@ -628,22 +758,106 @@
         </div>
         <div class="panel-note">
           <div class="tag">Note / 提示</div>
-          <p>外环的星点不是建议清单，而是可以动手的位置。先选一个，跑通，再回来改图。星表见下方。</p>
+          <p>外环的星点不是一份建议清单。它们是可以动手的位置。先选一个，跑通，再回来改图。星表见下方。</p>
         </div>
       </div>
     </aside>
   </main>
 
+  <section class="notes" aria-label="读图笔记">
+    <div class="notes-head">
+      <h2>读图笔记 <span>/ Notes from the Map</span></h2>
+      <span class="side">五段，写给愿意停下来的人</span>
+    </div>
+    <p class="notes-lead">图上的标签是压缩过的。下面几段，是我查资料和读图时留下的想法，不是标准答案。</p>
+    <div class="note-grid">
+      <article class="note-card">
+        <div class="n">01 / COST</div>
+        <h3>变便宜的东西，和变贵的东西</h3>
+        <p>斯坦福大学 2025 年的人工智能指数报告里有一个直观的例子。达到 GPT-3.5 水平的模型，处理一百万 token 的价格，从 2022 年 11 月的 20 美元，降到 2024 年 10 月的 0.07 美元。报告也提醒，具体倍数会随基准变化，方向却很清楚。生成变便宜以后，验证没有跟着变便宜。我在小组作业里见过一份引用格式很漂亮、内容却对不上的文献综述。那天晚上我们重新查原文，改到很晚。后来组里多了一个习惯，重要的事实至少两个人独立核对。这个习惯很笨，却让我们交作业时心里踏实。</p>
+        <div class="src">参考 / Stanford AI Index 2025</div>
+      </article>
+
+      <article class="note-card">
+        <div class="n">02 / WORK</div>
+        <h3>工作没有消失，任务在移动</h3>
+        <p>国际劳工组织 2023 年的工作论文里，24% 的文书类任务处于高暴露状态。这个数字说的是任务，岗位受到的影响要小一些。国际货币基金组织 2024 年的分析估计，全球约 40% 的就业暴露在人工智能影响之下，发达经济体约 60%，低收入国家约 26%。世界经济论坛 2025 年的报告里，雇主预计到 2030 年 39% 的核心技能会变化。数字很大，读的时候要小心。新增和消失不会落在同一个人身上，也不会落在同一个城市。大卫·奥托在 2015 年的论文里提醒，技术更容易替代任务，不容易一次性替代职业。我想到身边那些看起来很稳的实习，整理材料、做表格、写会议记录，这些事不会全部消失，却会被重新分配。</p>
+        <div class="src">参考 / ILO 2023 · IMF 2024 · WEF 2025 · Autor 2015</div>
+      </article>
+
+      <article class="note-card">
+        <div class="n">03 / TRUST</div>
+        <h3>信任成了新的门槛</h3>
+        <p>路透社新闻研究所 2025 年的数字新闻报告里，全球对新闻的信任度连续第三年停在 40%。受访者对主要由人工智能生产的新闻明显更不信任，报告给出的净信任分数是负 18。新闻之外，也有同样的问题。确认一段话是谁说的、图片是不是原图，变成日常动作。中国在 2023 年 8 月施行《生成式人工智能服务管理暂行办法》，要求服务提供者对生成内容负责，按规定标识，保护个人信息。制度能提高作假成本，不能替每个人完成判断。信任的积累很慢。一个人一次次把事做对，别人才敢把更重要的事交给他。模型可以模仿语气，无法替一个人积累这样的记录。</p>
+        <div class="src">参考 / Reuters Institute 2025 · 生成式人工智能服务管理暂行办法 2023</div>
+      </article>
+
+      <article class="note-card">
+        <div class="n">04 / PRACTICE</div>
+        <h3>我这一代人的功课</h3>
+        <p>我把能做的事分成三层，自己、学校和社会。对自己，我先把提问和验收学好。把背景、目的、读者、限制条件说清楚，结果会好很多。拿到答案以后，再问它哪里不确定，哪些结论需要查证。判断一段材料值不值得信，决定文章站在哪一边，最后把名字签上去，这些事我留给自己。学校如果还只考记忆和标准答案，学生会把人工智能当成作弊工具。考核如果更看重提问、验证、过程和表达，工具反而可以成为练习的伙伴。社会需要补上保障和再分配。国际劳工组织和国际货币基金组织都提到，社会保障、职业培训和劳动者参与决策很重要。雪莉·特克尔在《重拾交谈》里担心，人会把越来越多种类的对话交给机器。我给自己留出和人当面讨论的时间。这些事离一个大一学生有点远，但至少可以知道，应对需要个人，也需要制度。</p>
+        <div class="src">参考 / UNESCO 2023 · ILO 2023 · IMF 2024 · Turkle 2015</div>
+      </article>
+
+      <article class="note-card wide">
+        <div class="n">05 / OUTSIDE THE CHART</div>
+        <h3>图外的事</h3>
+        <p>还有两件事没有画进图里。国际能源署 2025 年的《能源与人工智能》报告估计，2024 年全球数据中心用电约 415 太瓦时，占全球用电约 1.5%，到 2030 年可能接近 945 太瓦时。凯特·克劳福德在《人工智能的地图》里提醒，人工智能并不悬浮在云端。它依赖矿产、电力、劳动力和数据。丹尼尔·萨斯坎德讨论过，如果工作减少，收入分配和人生意义都需要重新安排。效率和代价常常同时出现。</p>
+        <div class="src">参考 / IEA 2025 · Crawford 2021 · Susskind 2020</div>
+      </article>
+    </div>
+  </section>
+
+  <section class="closing" aria-label="写在最后">
+    <div class="closing-text">
+      <h2>写在最后 <span>/ After the Map</span></h2>
+      <p>写到这里，我仍然不知道十年后的工作会是什么样。报告能告诉我方向，不能替我过日子。我能做的，是把眼前的选择做得更清楚一点。</p>
+      <p>这张图不会替我做决定。它只是让我在打开对话框之前，先停一下，问清楚这份方便从哪里来，代价是什么，然后决定要不要用。</p>
+    </div>
+    <aside class="practice-card">
+      <h3>我给自己定的五条练习</h3>
+      <ol>
+        <li>每周留出两小时，不借助人工智能读书和写字。</li>
+        <li>对重要的事实，至少找两个独立来源核对。</li>
+        <li>在一个具体领域里，学到能判断细节的程度。</li>
+        <li>把用过的工作流写成模板，也记录失败。</li>
+        <li>每个月公开一个小作品，积累可以被验证的信任。</li>
+      </ol>
+    </aside>
+  </section>
+
   <section class="catalog" aria-label="星表">
     <div class="catalog-head">
       <h2>星表 <span>/ Catalogue</span></h2>
-      <span>按图层排列 · 并非重要性排序</span>
+      <span>按图层排列 · 不按重要性排序</span>
     </div>
     <div class="cat-grid" id="catGrid"></div>
   </section>
 
+  <section class="sources" aria-label="资料来源">
+    <div class="sources-head">
+      <h2>资料来源 <span>/ Sources</span></h2>
+      <span class="side">公开报告与著作 · 2026 年 10 月核对</span>
+    </div>
+    <div class="source-grid">
+      <div class="source-item"><span class="c">01</span><span>Stanford Institute for Human-Centered Artificial Intelligence. AI Index Report 2025. <a href="https://hai.stanford.edu/ai-index/2025-ai-index-report" target="_blank" rel="noopener">hai.stanford.edu</a></span></div>
+      <div class="source-item"><span class="c">02</span><span>Gmyrek, P., Berg, J., &amp; Bescond, D. Generative AI and Jobs, a Global Analysis of Potential Effects on Job Quantity and Quality. ILO Working Paper 96, 2023.</span></div>
+      <div class="source-item"><span class="c">03</span><span>International Monetary Fund. Gen-AI, Artificial Intelligence and the Future of Work. 2024. <a href="https://www.imf.org/en/Publications/Staff-Discussion-Notes/Issues/2024/01/14/Gen-AI-Artificial-Intelligence-and-the-Future-of-Work-542379" target="_blank" rel="noopener">imf.org</a></span></div>
+      <div class="source-item"><span class="c">04</span><span>World Economic Forum. Future of Jobs Report 2025. 2025. <a href="https://www.weforum.org/publications/the-future-of-jobs-report-2025/" target="_blank" rel="noopener">weforum.org</a></span></div>
+      <div class="source-item"><span class="c">05</span><span>Reuters Institute for the Study of Journalism. Digital News Report 2025. 2025. <a href="https://reutersinstitute.politics.ox.ac.uk/digital-news-report/2025" target="_blank" rel="noopener">reutersinstitute.politics.ox.ac.uk</a></span></div>
+      <div class="source-item"><span class="c">06</span><span>国家互联网信息办公室等. 生成式人工智能服务管理暂行办法. 2023. <a href="https://www.cac.gov.cn/2023-07/13/c_1690898327029107.htm" target="_blank" rel="noopener">cac.gov.cn</a></span></div>
+      <div class="source-item"><span class="c">07</span><span>UNESCO. Guidance for Generative AI in Education and Research. 2023. <a href="https://www.unesco.org/en/articles/guidance-generative-ai-education-and-research" target="_blank" rel="noopener">unesco.org</a></span></div>
+      <div class="source-item"><span class="c">08</span><span>International Energy Agency. Energy and AI. 2025. <a href="https://www.iea.org/reports/energy-and-ai" target="_blank" rel="noopener">iea.org</a></span></div>
+      <div class="source-item"><span class="c">09</span><span>Autor, D. H. Why Are There Still So Many Jobs? The History and Future of Workplace Automation. Journal of Economic Perspectives, 2015.</span></div>
+      <div class="source-item"><span class="c">10</span><span>Jevons, W. S. The Coal Question. Macmillan, 1865.</span></div>
+      <div class="source-item"><span class="c">11</span><span>Susskind, D. A World Without Work. Metropolitan Books, 2020.</span></div>
+      <div class="source-item"><span class="c">12</span><span>Crawford, K. Atlas of AI. Yale University Press, 2021.</span></div>
+      <div class="source-item"><span class="c">13</span><span>Turkle, S. Reclaiming Conversation. Penguin Press, 2015.</span></div>
+    </div>
+  </section>
+
   <div class="footer">
-    <span>方案 03 · 星图 / <a href="essay.html">作业正文</a></span>
+    <span>方案 03 · 星图 / 一份关于变化与应对的作业</span>
     <span>Claude / Knowledge Map Series / 03</span>
   </div>
 </div>
@@ -679,19 +893,19 @@
     {id:'S2',name:'生产重构',short:'生产重构',desc:'从「人操作工具」到「人编排智能体」。一个人可以拥有一家公司的产能。'},
     {id:'S3',name:'市场极化',short:'市场极化',desc:'供给爆炸，注意力与信任成为终极稀缺。标准化的中间环节被抽空。'},
     {id:'S4',name:'认知迁移',short:'认知迁移',desc:'记忆与检索贬值，提问、判断、审美、担责升值。'},
-    {id:'S5',name:'结构震荡',short:'结构震荡',desc:'职业极化：顶部放大、底部服务、中间空心。证书与资历贬值。'},
+    {id:'S5',name:'结构震荡',short:'结构震荡',desc:'职业极化，顶部放大、底部服务、中间空心。证书与资历贬值。'},
     {id:'S6',name:'意义追问',short:'意义追问',desc:'工作与身份解绑。「人何以为人」从哲学命题变成日常问题。'}
   ];
   const responses=[
-    {id:'A1',actor:'个人',name:'换栈',short:'换栈',desc:'从技能栈到判断栈：定义问题、编排智能体、验证结果、承担后果。',links:['S1','S4']},
-    {id:'A2',actor:'个人',name:'建资产',short:'建资产',desc:'作品、声誉、关系、专有经验——无法被一次性生成的东西。',links:['S3','S6']},
+    {id:'A1',actor:'个人',name:'换栈',short:'换栈',desc:'从技能栈到判断栈，定义问题、编排智能体、验证结果、承担后果。',links:['S1','S4']},
+    {id:'A2',actor:'个人',name:'建资产',short:'建资产',desc:'作品、声誉、关系、专有经验，这些东西无法被一次性生成。',links:['S3','S6']},
     {id:'A3',actor:'个人',name:'做编排者',short:'编排者',desc:'一个人加一组智能体，就是一家公司。学会委派、设定标准、验收。',links:['S1','S2']},
     {id:'A4',actor:'个人',name:'保反脆弱',short:'反脆弱',desc:'多元收入、低成本试验、持续的学习带宽。不要把筹码押在单一叙事上。',links:['S5','S6']},
     {id:'A5',actor:'组织',name:'重设计流程',short:'流程',desc:'先问「这件事还需要人做吗」，再问「用什么工具」。',links:['S2','S5']},
     {id:'A6',actor:'组织',name:'小前台 + 强中台',short:'中台',desc:'把知识、数据与判断沉淀为组织资产，让一线随时调用。',links:['S2','S3']},
     {id:'A7',actor:'组织',name:'人机分工',short:'分工',desc:'机器负责广度与速度，人负责深度与责任。',links:['S1','S5']},
     {id:'A8',actor:'组织',name:'度量转向',short:'度量',desc:'从产出量转向结果、信任与长期价值。',links:['S3','S6']},
-    {id:'A9',actor:'社会',name:'教育转向',short:'教育',desc:'从传授知识到训练判断：项目制、提问、终身学习。',links:['S4','S5']},
+    {id:'A9',actor:'社会',name:'教育转向',short:'教育',desc:'从传授知识到训练判断，项目制、提问、终身学习。',links:['S4','S5']},
     {id:'A10',actor:'社会',name:'制度补位',short:'制度',desc:'社会保障、再分配、AI 责任与透明度框架。',links:['S5','S6']},
     {id:'A11',actor:'社会',name:'公共基础设施',short:'公共设施',desc:'算力、数据、模型的可及性，避免能力垄断。',links:['S1','S3']}
   ];
