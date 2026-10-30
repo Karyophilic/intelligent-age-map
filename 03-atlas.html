@@ -406,6 +406,34 @@
     font-family:var(--mono);font-size:8.5px;line-height:1.7;color:var(--faint);letter-spacing:.02em;
   }
 
+  .respond{margin-top:46px}
+  .respond-lead{margin:0 0 18px;font-size:13px;line-height:1.9;color:#aeb6cc;max-width:820px}
+  .respond-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .respond-card{
+    border:1px solid rgba(216,180,106,.22);border-radius:20px;
+    background:
+      linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,0) 42%),
+      rgba(9,15,42,.5);
+    -webkit-backdrop-filter:blur(14px) saturate(1.15);
+    backdrop-filter:blur(14px) saturate(1.15);
+    padding:20px 22px 18px;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 18px 40px rgba(0,0,0,.28);
+  }
+  .respond-card .n{font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--copper);margin-bottom:7px}
+  .respond-card h3{margin:0 0 8px;font-family:var(--serif);font-size:18px;letter-spacing:.05em;color:#f3ead7}
+  .respond-card p{margin:0;font-size:13px;line-height:1.9;color:#c5cbdc;text-align:justify}
+  .respond-personal{
+    margin-top:18px;padding:16px 20px;border:1px solid rgba(216,180,106,.16);border-radius:16px;
+    background:rgba(9,15,42,.32);
+    display:grid;grid-template-columns:190px 1fr;gap:18px;align-items:start;
+  }
+  .respond-personal .h{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--copper);line-height:1.7}
+  .respond-personal p{margin:0;font-size:12.5px;line-height:1.85;color:#b9c0d3}
+  .respond-src{
+    margin-top:12px;font-family:var(--mono);font-size:8.5px;line-height:1.7;
+    color:var(--faint);letter-spacing:.02em;
+  }
+
   .closing{
     border-top:1px solid var(--line);margin-top:50px;padding-top:26px;
   }
@@ -460,6 +488,8 @@
     .brief{grid-template-columns:1fr}
     .note-grid{grid-template-columns:1fr}
     .note-card.wide{grid-column:auto}
+    .respond-grid{grid-template-columns:1fr}
+    .respond-personal{grid-template-columns:1fr;gap:8px}
   }
   @media (max-width:640px){
     .plate{padding:0 16px}
@@ -672,7 +702,7 @@
       <div class="brief-kicker">写在图前 / Before the Map</div>
       <div class="brief-copy">
         <p>这份作业从一个很小的时刻开始。我打开一个对话框，贴进一段材料，几秒钟后得到一份看起来完整的答案。它写得比我从容，也比我校对得快。我盯着那段文字，第一次认真想，如果答案变得这么便宜，我还需要学习什么。</p>
-        <p>这张星图是我的回答。它把变化分成几层，中心是我认为不会轻易改变的东西，越往外，变化越快，也越接近可以动手的地方。图上的每一颗星都能点开。下面的笔记，是我查资料和读图时留下的几段想法，不是标准答案。</p>
+        <p>这张星图是我的回答。它把变化分成几层，中心是我认为不会轻易改变的东西，越往外，变化越快，也越接近可以动手的地方。图上的每一颗星都能点开。下面的笔记，是我查资料和读图时留下的几段想法，带着我自己的判断。</p>
       </div>
     </div>
     <aside class="brief-card">
@@ -736,7 +766,7 @@
       <h2>读图笔记 <span>/ Notes from the Map</span></h2>
       <span class="side">五段，写给愿意停下来的人</span>
     </div>
-    <p class="notes-lead">图上的标签是压缩过的。下面几段，是我查资料和读图时留下的想法，不是标准答案。</p>
+    <p class="notes-lead">图上的标签是压缩过的。下面几段，是我查资料和读图时留下的想法，带着我自己的判断。</p>
     <div class="note-grid">
       <article class="note-card">
         <div class="n">01 / COST</div>
@@ -760,10 +790,10 @@
       </article>
 
       <article class="note-card">
-        <div class="n">04 / PRACTICE</div>
-        <h3>我这一代人的功课</h3>
-        <p>我把能做的事分成三层，自己、学校和社会。对自己，我先把提问和验收学好。把背景、目的、读者、限制条件说清楚，结果会好很多。拿到答案以后，再问它哪里不确定，哪些结论需要查证。判断一段材料值不值得信，决定文章站在哪一边，最后把名字签上去，这些事我留给自己。学校如果还只考记忆和标准答案，学生会把人工智能当成作弊工具。考核如果更看重提问、验证、过程和表达，工具反而可以成为练习的伙伴。社会需要补上保障和再分配。国际劳工组织和国际货币基金组织都提到，社会保障、职业培训和劳动者参与决策很重要。雪莉·特克尔在《重拾交谈》里担心，人会把越来越多种类的对话交给机器。我给自己留出和人当面讨论的时间。这些事离一个大一学生有点远，但至少可以知道，应对需要个人，也需要制度。</p>
-        <div class="src">参考 / UNESCO 2023 · ILO 2023 · IMF 2024 · Turkle 2015</div>
+        <div class="n">04 / ATTENTION</div>
+        <h3>注意力是有限的东西</h3>
+        <p>雪莉·特克尔在《重拾交谈》里担心，人会把越来越多种类的对话交给机器。她的提醒对我有用。有些话在屏幕上看不出分量，只有当面说，才知道对方是不是真的在意。我给自己留出和人当面讨论的时间，哪怕只是为一篇文章争几句。注意力是有限的，我把这一点也画进了图里，放在中心的常量层。</p>
+        <div class="src">参考 / Turkle 2015</div>
       </article>
 
       <article class="note-card wide">
@@ -773,6 +803,36 @@
         <div class="src">参考 / IEA 2025 · Crawford 2021 · Susskind 2020</div>
       </article>
     </div>
+  </section>
+
+  <section class="respond" aria-label="如何应对">
+    <div class="notes-head">
+      <h2>如何应对 <span>/ What We Can Do</span></h2>
+      <span class="side">三层，个人放在最后</span>
+    </div>
+    <p class="respond-lead">应对发生在三个层面。一个人再努力，也无法独自承担整个行业的调整。图上外环的星点分成个人、组织、社会三组。我先说教育、组织和制度，最后再说我自己能做的小事。</p>
+    <div class="respond-grid">
+      <article class="respond-card">
+        <div class="n">01 / EDUCATION</div>
+        <h3>教育</h3>
+        <p>学校如果还只考记忆和标准答案，学生会把人工智能当成作弊工具。考核如果更看重提问、验证、过程和表达，工具反而可以成为练习的伙伴。联合国教科文组织 2023 年的指南建议把人的能动性放在中心，重新设计评估方式，培训教师，让学生学会和这些系统相处。</p>
+      </article>
+      <article class="respond-card">
+        <div class="n">02 / ORGANIZATION</div>
+        <h3>组织</h3>
+        <p>组织需要先改流程，再买工具。先问这件事还需不需要人做，再问用什么工具。把知识、数据和判断沉淀成可复用的东西，让一线的人随时能调用。机器负责速度和广度，人负责深度和责任。度量也要改，产出了多少只是一个指标，结果是否可信、关系是否还在，也要看。</p>
+      </article>
+      <article class="respond-card">
+        <div class="n">03 / INSTITUTION</div>
+        <h3>制度</h3>
+        <p>社会需要补上保障和再分配。国际劳工组织和国际货币基金组织都提到，社会保障、职业培训和劳动者参与决策很重要。中国 2023 年的暂行办法要求服务提供者对生成内容负责，按规定标识，保护个人信息。公共算力、数据和模型的可及性也值得讨论，它们决定了小公司和个人有没有机会参与。</p>
+      </article>
+    </div>
+    <div class="respond-personal">
+      <div class="h">我自己先做三件小事<br>WHAT I CAN DO NOW</div>
+      <p>每周留出两小时，不借助人工智能读书和写字。对重要的事实，至少找两个独立来源核对。在一个具体领域里，学到能判断细节的程度。这些事很小，但它们是我能控制的部分。</p>
+    </div>
+    <div class="respond-src">参考 / UNESCO 2023 · ILO 2023 · IMF 2024 · 生成式人工智能服务管理暂行办法 2023</div>
   </section>
 
   <section class="closing" aria-label="写在最后">
